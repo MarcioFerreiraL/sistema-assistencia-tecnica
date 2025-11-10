@@ -73,7 +73,7 @@ O projeto foi construído com as seguintes tecnologias:
 
 1.  Clone este repositório:
     ```bash
-    git clone [url-do-repositorio](https://github.com/MarcioFerreiraL/sistema-assistencia-tecnica.git)
+    git clone https://github.com/MarcioFerreiraL/sistema-assistencia-tecnica.git
     cd assistencia_tecnica
     ```
 2.  Use o Maven para compilar e executar a aplicação:
