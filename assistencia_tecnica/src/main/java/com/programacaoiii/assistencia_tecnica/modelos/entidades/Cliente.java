@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 @Table(name = "tb_cliente")
 public class Cliente extends PessoaAbstrato{
 	
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente_id", cascade = CascadeType.ALL)
 	List<Hardware> hardware_id = new ArrayList<>();
 
 	public Cliente() {
