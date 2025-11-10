@@ -1,0 +1,242 @@
+@startuml
+' Título do Diagrama
+title Diagrama de Classes - Assistência Técnica
+
+' Configurações de Aparência
+skinparam packageStyle rectangle
+hide empty members
+left to right direction
+
+' Pacote Raiz
+package assistencia_tecnica {
+
+    package model.entity {
+
+        abstract class Pessoa <<MappedSuperclass>> {
+            -id : UUID
+            -nome : String
+            -cpf : String
+            -dataNascimento : LocalDate
+            -endereco : String
+        }
+        
+        abstract class Produto <<MappedSuperclass>> {
+            -numeroSerie : UUID
+            +initUUID()
+        }
+
+        class Administrador <<Entity>> extends Pessoa implements service.Relatorio {
+            +abrirOS(cliente, hardware)
+            +atualizarOS(os, cliente, hardware)
+            +excluirOS(os)
+            +verRelatorioFinanceiro()
+            +verRelatorioEstoque()
+            +verRelatorioOS()
+        }
+
+        class Atendente <<Entity>> extends Pessoa {
+            +abrirOS(cliente, hardware)
+            +atualizarOS(os, cliente, hardware)
+            +reqExclusaoOS(os)
+        }
+
+        class Cliente <<Entity>> extends Pessoa {
+            -hardware : List<Hardware>
+            +verHardwares()
+            +aprovarOrcamento()
+            +cancelarOS()
+        }
+        
+        class Tecnico <<Entity>> extends Pessoa {
+            +fazerOrcamento(os, valor)
+            +assumirOS(os)
+            +executarOS(os)
+            +finalizarOS(os)
+        }
+
+        class Hardware <<Entity>> extends Produto {
+            -tipoHardware : TipoHardware
+            -cliente : Cliente
+        }
+        
+        class Peca <<Entity>> extends Produto {
+            -nome : String
+            -tipoPeca : TipoPeca
+        }
+
+        class OrdemServico <<Entity>> implements Serializable {
+            -serialVersionUID : long {static}
+            -id : UUID
+            -valorOrcamento : double
+            -descricao : String
+            -comportamentoEstado : State <<Transient>>
+            -estado : EstadoOS
+            -cliente : Cliente
+            -hardware : Hardware
+            -tecnicoResponsavel : Tecnico
+            -pecasUtilizadas : Set<Peca>
+            
+            +aprovar()
+            +orcamentar()
+            +executar()
+            +finalizar()
+            +cancelar()
+            +setEstado(novoEstado)
+        }
+    }
+
+    
+    ' =============================================
+    ' ===          Controllers                  ===
+    ' =============================================
+    package controller {
+        class EstoqueController {
+            -pecasDisponiveis : Map<Peca, Integer>
+            +verPecas()
+            +adicionarPeca(peca, quantidade)
+            +removerPeca(peca, quantidade)
+            +verificarDisponibilidade(peca)
+        }
+        
+        class MaterialController {
+            -pecasUtilizadas : ArrayList<Peca>
+        }
+    }
+
+    ' =============================================
+    ' ===          Model -> Enums               ===
+    ' =============================================
+    package model.enums {
+        enum EstadoOS {
+            ABERTA
+            AGUARDANDO_ORCAMENTO
+            AGUARDANDO_APROVACAO
+            EM_REPARO
+            FINALIZADA
+            CANCELADA
+        }
+        
+        enum TipoHardware {
+            COMPUTADOR
+            NOTEBOOK
+            CELULAR
+            OUTROS
+        }
+        
+        enum TipoPeca {
+            PROCESSADOR
+            MEMORIA_RAM
+            PLACA_MAE
+            TELA
+            BATERIA
+        }
+    }
+
+    ' =============================================
+    ' ===          Service (Lógica)             ===
+    ' =============================================
+    package service {
+        interface Relatorio {
+            +verRelatorioFinanceiro()
+            +verRelatorioEstoque()
+            +verRelatorioOS()
+        }
+    }
+
+    ' =============================================
+    ' ===          Service -> Config            ===
+    ' =============================================
+    package service.config {
+        class DatabaseConnector <<Singleton>> {
+            -instance : DatabaseConnector {static}
+            -connection : Connection
+            +getInstance() : DatabaseConnector {static}
+        }
+    }
+
+    ' =============================================
+    ' ===       Service -> Patterns (State)       ===
+    ' =============================================
+    package service.patterns.state {
+        interface State {
+            +abrir(os)
+            +orcamentar(os)
+            +aprovar(os)
+            +executar(os)
+            +finalizar(os)
+            +cancelar(os)
+        }
+
+        abstract class AbstractEstadoOS implements State {
+            #proibir(acao)
+        }
+
+        class EstadoAberta extends AbstractEstadoOS
+        class EstadoAguardandoAprovacao extends AbstractEstadoOS
+        class EstadoAguardandoOrcamento extends AbstractEstadoOS
+        class EstadoEmReparo extends AbstractEstadoOS
+        class EstadoCancelada extends AbstractEstadoOS
+        class EstadoFinalizada extends AbstractEstadoOS
+    }
+
+    ' =============================================
+    ' ===     Service -> Patterns (Template)      ===
+    ' =============================================
+    package service.patterns.template {
+        abstract class TemplateMethod {
+            +executarProcessoReparo() {final}
+            #diagnosticarProblema() {abstract}
+            #realizarReparo() {abstract}
+            #realizarTestes() {abstract}
+            #separarMateriais() {abstract}
+            #limpezaFinal()
+        }
+
+        class ReparoNotebook extends TemplateMethod
+        class ReparoCelular extends TemplateMethod
+    }
+
+}
+
+
+' =============================================
+' ===          RELACIONAMENTOS                ===
+' =============================================
+
+' --- Herança ---
+Administrador --|> Pessoa
+Atendente --|> Pessoa
+Cliente --|> Pessoa
+Tecnico --|> Pessoa
+Hardware --|> Produto
+Peca --|> Produto
+
+' --- Implementação de Interfaces ---
+Administrador ..|> Relatorio
+AbstractEstadoOS ..|> State
+EstadoAberta --|> AbstractEstadoOS
+EstadoAguardandoAprovacao --|> AbstractEstadoOS
+EstadoAguardandoOrcamento --|> AbstractEstadoOS
+EstadoEmReparo --|> AbstractEstadoOS
+EstadoCancelada --|> AbstractEstadoOS
+EstadoFinalizada --|> AbstractEstadoOS
+
+ReparoNotebook --|> TemplateMethod
+ReparoCelular --|> TemplateMethod
+
+' --- Associações e Dependências ---
+OrdemServico "0..*" -- "1" Cliente
+OrdemServico "0..*" -- "1" Hardware
+OrdemServico "0..*" -- "0..1" Tecnico
+OrdemServico "0..*" -- "0..*" Peca : (pecasUtilizadas)
+
+Hardware "0..*" -- "1" Cliente
+Tecnico ..> TemplateMethod : (usa)
+
+' --- Associações com Enums e Padrões ---
+OrdemServico o-- "1" EstadoOS : (estado)
+OrdemServico ..> State : (comportamentoEstado)
+Hardware o-- "1" TipoHardware : (tipoHardware)
+Peca o-- "1" TipoPeca : (tipoPeca)
+
+@enduml

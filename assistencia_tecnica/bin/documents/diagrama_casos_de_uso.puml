@@ -1,0 +1,33 @@
+@startuml
+actor tecnico as tec
+actor administrador as adm
+actor atendente as atd
+actor cliente as clt
+
+left to right direction 
+
+rectangle Sistema {
+usecase "Abrir OS" as UC1
+usecase "Editar OS" as UC2
+usecase "Ver OS" as UC3
+usecase "Req exclusão" as UC4
+usecase "Exluir OS" as UC5
+usecase "Finalizar OS" as UC6
+usecase "Ver Relatorios" as UC7
+}
+
+tec -->  UC6
+tec --> UC3
+adm --> UC5
+adm --> UC7
+adm --> UC3
+adm --> UC1
+adm --> UC2
+atd --> UC1
+atd --> UC2
+atd --> UC4
+atd --> UC3
+clt --> UC3
+UC4 .> UC5 : extends
+
+@enduml
