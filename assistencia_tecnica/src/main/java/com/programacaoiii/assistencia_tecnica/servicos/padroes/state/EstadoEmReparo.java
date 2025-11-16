@@ -1,7 +1,7 @@
 package com.programacaoiii.assistencia_tecnica.servicos.padroes.state;
 
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.OrdemServico;
-import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOS;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOSEnum;
 
 public class EstadoEmReparo extends EstadoOSAbstrato {
     
@@ -15,12 +15,12 @@ public class EstadoEmReparo extends EstadoOSAbstrato {
     @Override
     public void finalizar(OrdemServico os) {
         System.out.println("Transição: EM_REPARO -> FINALIZADA");
-        os.setEstado(EstadoOS.FINALIZADA);
+        os.setEstado(EstadoOSEnum.FINALIZADA);
     }
     
     @Override
     public void cancelar(OrdemServico os) {
         System.out.println("Transição: EM_REPARO -> CANCELADA");
-        os.setEstado(EstadoOS.CANCELADA);
+        os.setEstado(EstadoOSEnum.CANCELADA);
     }
 }

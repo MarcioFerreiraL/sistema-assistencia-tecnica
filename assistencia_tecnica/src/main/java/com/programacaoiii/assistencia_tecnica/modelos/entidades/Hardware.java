@@ -1,6 +1,6 @@
 package com.programacaoiii.assistencia_tecnica.modelos.entidades;
 
-import com.programacaoiii.assistencia_tecnica.modelos.enums.TipoHardware;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.TipoHardwareEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Hardware extends ProdutoAbstrato{
 	
 	@Enumerated(EnumType.STRING)
-	private TipoHardware tipoHardware;
+	private TipoHardwareEnum tipoHardware;
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -24,18 +24,18 @@ public class Hardware extends ProdutoAbstrato{
     	super();
     }
 	
-	public Hardware(TipoHardware tipoHardware, Cliente cliente) {
+	public Hardware(TipoHardwareEnum tipoHardware, Cliente cliente) {
 		super();
 		initUUID();
 		this.tipoHardware = tipoHardware;
 		this.cliente_id = cliente;
 	}
 
-	public TipoHardware getTipoHardware() {
+	public TipoHardwareEnum getTipoHardware() {
 		return tipoHardware;
 	}
 
-	public void setTipoHardware(TipoHardware tipoHardware) {
+	public void setTipoHardware(TipoHardwareEnum tipoHardware) {
 		this.tipoHardware = tipoHardware;
 	}
 

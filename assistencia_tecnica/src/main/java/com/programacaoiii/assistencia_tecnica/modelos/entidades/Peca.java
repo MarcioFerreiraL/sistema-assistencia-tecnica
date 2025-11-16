@@ -1,6 +1,6 @@
 package com.programacaoiii.assistencia_tecnica.modelos.entidades;
 
-import com.programacaoiii.assistencia_tecnica.modelos.enums.TipoPeca;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.TipoPecaEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,13 +14,13 @@ public class Peca extends ProdutoAbstrato{
 	private String nome;
 	
 	@Enumerated(EnumType.STRING)
-	private TipoPeca tipoPeca;
+	private TipoPecaEnum tipoPeca;
 	
 	public Peca() {
     	super();
     }
 	
-	public Peca(String nome, TipoPeca tipoPeca) {
+	public Peca(String nome, TipoPecaEnum tipoPeca) {
 		super();
 		initUUID();
 		this.nome = nome;
@@ -35,11 +35,11 @@ public class Peca extends ProdutoAbstrato{
 		this.nome = nome;
 	}
 
-	public TipoPeca getTipoPeca() {
+	public TipoPecaEnum getTipoPeca() {
 		return tipoPeca;
 	}
 
-	public void setTipoPeca(TipoPeca tipoPeca) {
+	public void setTipoPeca(TipoPecaEnum tipoPeca) {
 		this.tipoPeca = tipoPeca;
 	}
 	

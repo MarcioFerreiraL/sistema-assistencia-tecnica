@@ -11,8 +11,14 @@ public class AssistenciaTecnicaAplicacao {
 	}
 
 }
-// fazer graficos visuais com vue (se der tempo, faz)
+
+// fazer o programa rodar.
+// implementar completamente o padrao template method (tem que fazer)
 // fazer tratamento de erros (tem que fazer)
 // fazer as regras de negocio (tem que fazer)
 // fazer a api(controladores) (tem que fazer)
-// fazer os testes (é bom fazer)
+
+
+//fazer os testes (é bom fazer)
+
+//fazer graficos visuais com vue (se der tempo, faz)

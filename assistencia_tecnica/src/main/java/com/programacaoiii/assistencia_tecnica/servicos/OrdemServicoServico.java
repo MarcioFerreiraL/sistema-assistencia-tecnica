@@ -5,7 +5,7 @@ import com.programacaoiii.assistencia_tecnica.modelos.entidades.Cliente;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.Hardware;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.OrdemServico;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.Tecnico;
-import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOS;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOSEnum;
 import com.programacaoiii.assistencia_tecnica.repositorios.ClienteRepositorio;
 import com.programacaoiii.assistencia_tecnica.repositorios.HardwareRepositorio;
 import com.programacaoiii.assistencia_tecnica.repositorios.OrdemServicoRepositorio;
@@ -81,7 +81,7 @@ public class OrdemServicoServico {
     @Transactional
     public void excluirOS(UUID id) {
         OrdemServico os = buscarOSPorId(id);
-        if (os.getEstado() != EstadoOS.ABERTA) {
+        if (os.getEstado() != EstadoOSEnum.ABERTA) {
            throw new IllegalStateException("Não é possível excluir uma OS em andamento.");
         }
         osRepositorio.delete(os);

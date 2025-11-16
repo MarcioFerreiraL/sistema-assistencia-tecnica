@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOS;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOSEnum;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.state.*;
 
 import jakarta.persistence.Id;
@@ -34,7 +34,7 @@ public class OrdemServico implements Serializable{
     private StateInterface comportamentoEstado;
 	
 	@Enumerated(EnumType.STRING)
-	private EstadoOS estado;
+	private EstadoOSEnum estado;
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -67,8 +67,8 @@ public class OrdemServico implements Serializable{
 		this.cliente = cliente;
 		this.hardware = hardware;
 		this.tecnico = tecnicoResponsavel;
-		// Define o estado inicial (e o comportamento)
-		this.setEstado(EstadoOS.ABERTA); 
+		// Define o estado inicial como aberta
+		this.setEstado(EstadoOSEnum.ABERTA); 
 	}
 
 	public UUID getId() {
@@ -115,7 +115,7 @@ public class OrdemServico implements Serializable{
 		this.tecnico = tecnicoResponsavel;
 	}
     
-    // --- MÉTODOS DE DELEGAÇÃO DO PADRÃO STATE ---
+    // --- MÉTODOS DO PADRÃO STATE ---
     
 	public void aprovar() {
         this.comportamentoEstado.aprovar(this);
@@ -137,17 +137,14 @@ public class OrdemServico implements Serializable{
         this.comportamentoEstado.cancelar(this);
     }
 
-    // ---------------------------------------------
     
-    public EstadoOS getEstado() {
+    public EstadoOSEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoOS novoEstado) {
-        this.estado = novoEstado; // Salva o Enum no banco
+    public void setEstado(EstadoOSEnum novoEstado) {
+        this.estado = novoEstado;
 
-        // Atualiza o objeto de comportamento (Padrão State)
-        // com base no Enum que foi salvo!
         switch (novoEstado) {
             case ABERTA:
                 this.comportamentoEstado = new EstadoAberta();

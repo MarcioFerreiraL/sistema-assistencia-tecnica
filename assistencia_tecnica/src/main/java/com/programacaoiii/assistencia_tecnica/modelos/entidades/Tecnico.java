@@ -2,7 +2,7 @@ package com.programacaoiii.assistencia_tecnica.modelos.entidades;
 
 import java.time.LocalDate;
 
-import com.programacaoiii.assistencia_tecnica.modelos.enums.TipoHardware;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.TipoHardwareEnum;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.ReparoCelular;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.ReparoNotebook;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.TemplateMethod;
@@ -34,11 +34,11 @@ public class Tecnico extends PessoaAbstrato{
         
         // 1. Seleciona o Template Method apropriado
         TemplateMethod reparo;
-        TipoHardware tipo = os.getHardware().getTipoHardware();
+        TipoHardwareEnum tipo = os.getHardware().getTipoHardware();
 
-        if (tipo == TipoHardware.NOTEBOOK) {
+        if (tipo == TipoHardwareEnum.NOTEBOOK) {
             reparo = new ReparoNotebook();
-        } else if (tipo == TipoHardware.CELULAR) {
+        } else if (tipo == TipoHardwareEnum.CELULAR) {
             reparo = new ReparoCelular();
         } else {
             // Um template padrão para COMPUTADOR ou OUTROS
