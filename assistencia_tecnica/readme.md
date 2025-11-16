@@ -29,8 +29,6 @@ A arquitetura foi construída sobre três padrões de projeto fundamentais: **St
 * **Problema:** Garantir um ponto de acesso central e único para o banco de dados, evitando a criação de múltiplas conexões desnecessárias.
 * **Solução:** O padrão Singleton garante que a classe `DatabaseConnector` tenha apenas uma instância e fornece um ponto de acesso global a ela (`getInstance()`). A classe possui um construtor privado para impedir a instanciação direta.
 
-*(Nota: Em uma aplicação Spring Boot, o próprio framework gerencia o ciclo de vida dos beans, como os Repositórios e o DataSource, tipicamente como Singletons, mas este padrão foi incluído na documentação do projeto.)*
-
 ## 🛠️ Tecnologias Utilizadas
 
 O projeto foi construído com as seguintes tecnologias:
@@ -75,7 +73,7 @@ O projeto foi construído com as seguintes tecnologias:
 
 1.  Clone este repositório:
     ```bash
-    git clone <url-do-repositorio>
+    git clone https://github.com/MarcioFerreiraL/sistema-assistencia-tecnica.git
     cd assistencia_tecnica
     ```
 2.  Use o Maven para compilar e executar a aplicação:
