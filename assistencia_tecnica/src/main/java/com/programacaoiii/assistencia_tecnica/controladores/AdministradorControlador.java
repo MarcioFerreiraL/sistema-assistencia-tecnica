@@ -49,4 +49,9 @@ public class AdministradorControlador {
         administradorServico.excluir(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Administrador> buscarPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(administradorServico.buscarPorCpf(cpf));
+    }
 }

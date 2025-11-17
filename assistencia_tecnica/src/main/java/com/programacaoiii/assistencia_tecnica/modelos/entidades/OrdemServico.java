@@ -1,9 +1,13 @@
 package com.programacaoiii.assistencia_tecnica.modelos.entidades;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOSEnum;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.state.*;
@@ -13,6 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,11 +36,22 @@ public class OrdemServico implements Serializable{
 	private double valorOrcamento;
 	private String descricao;
 	
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant dataCriacao;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Instant dataAtualizacao;
+
+	
 	@Transient
     private StateInterface comportamentoEstado;
 	
 	@Enumerated(EnumType.STRING)
-	private EstadoOSEnum estado;
+    @Column(nullable = false)
+	private EstadoOSEnum estado = EstadoOSEnum.ABERTA;
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -58,6 +75,7 @@ public class OrdemServico implements Serializable{
     private Set<Peca> pecasUtilizadas = new HashSet<>();
 	
 	public OrdemServico() {
+        this.inicializarEstado();
 	}
 	
 	public OrdemServico(double valorOrcamento, String descricao, Cliente cliente, Hardware hardware, Tecnico tecnicoResponsavel) {
@@ -67,9 +85,16 @@ public class OrdemServico implements Serializable{
 		this.cliente = cliente;
 		this.hardware = hardware;
 		this.tecnico = tecnicoResponsavel;
-		// Define o estado inicial como aberta
-		this.setEstado(EstadoOSEnum.ABERTA); 
+        this.inicializarEstado();
 	}
+
+    @PostLoad
+    public void inicializarEstado() {
+        if (this.estado == null) {
+            this.estado = EstadoOSEnum.ABERTA;
+        }
+        this.setEstado(this.estado);
+    }
 
 	public UUID getId() {
 		return id;
@@ -115,7 +140,15 @@ public class OrdemServico implements Serializable{
 		this.tecnico = tecnicoResponsavel;
 	}
     
-    // --- MÉTODOS DO PADRÃO STATE ---
+    public Instant getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public Instant getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+    
+    // padrao state
     
 	public void aprovar() {
         this.comportamentoEstado.aprovar(this);
@@ -163,6 +196,7 @@ public class OrdemServico implements Serializable{
                 break;
             case AGUARDANDO_ORCAMENTO:
             	this.comportamentoEstado = new EstadoAguardandoOrcamento();
+                break;
             default:
                 this.comportamentoEstado = new EstadoAberta();
         }

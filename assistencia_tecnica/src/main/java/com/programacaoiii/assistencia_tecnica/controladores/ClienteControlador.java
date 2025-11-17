@@ -49,4 +49,9 @@ public class ClienteControlador {
         clienteServico.excluir(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Cliente> buscarPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(clienteServico.buscarPorCpf(cpf));
+    }
 }

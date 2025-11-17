@@ -9,4 +9,6 @@ public interface ClienteRepositorio extends JpaRepository<Cliente, UUID>{
 
 	Optional<Cliente> findAllByCpf(String cpf);
 
+	Optional<Cliente> findByCpf(String cpf);
+
 }

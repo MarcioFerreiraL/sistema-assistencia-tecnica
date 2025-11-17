@@ -11,4 +11,6 @@ public interface TecnicoRepositorio extends JpaRepository<Tecnico, UUID>{
 
 	Optional<Cliente> findAllByCpf(String cpf);
 
+	Optional<Tecnico> findByCpf(String cpf);
+
 }

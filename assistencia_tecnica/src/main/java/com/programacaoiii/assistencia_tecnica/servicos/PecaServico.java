@@ -2,6 +2,7 @@ package com.programacaoiii.assistencia_tecnica.servicos;
 
 import com.programacaoiii.assistencia_tecnica.dtos.PecaDto;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.Peca;
+import com.programacaoiii.assistencia_tecnica.repositorios.OrdemServicoRepositorio;
 import com.programacaoiii.assistencia_tecnica.repositorios.PecaRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +13,12 @@ import java.util.UUID;
 @Service
 public class PecaServico {
 
-    private final PecaRepositorio pecaRepositorio;
+	private final PecaRepositorio pecaRepositorio;
+    private final OrdemServicoRepositorio ordemServicoRepositorio;
 
-    public PecaServico(PecaRepositorio pecaRepositorio) {
+    public PecaServico(PecaRepositorio pecaRepositorio, OrdemServicoRepositorio ordemServicoRepositorio) {
         this.pecaRepositorio = pecaRepositorio;
+        this.ordemServicoRepositorio = ordemServicoRepositorio;
     }
 
     @Transactional
@@ -50,8 +53,15 @@ public class PecaServico {
 
     @Transactional
     public void excluirPeca(UUID id) {
-        Peca peca = buscarPecaPorId(id);
-        // implementar logica do negocio
+        Peca peca = buscarPecaPorId(id); 
+        
+        long count = ordemServicoRepositorio.countByPecaId(id);
+        
+        if (count > 0) {
+            throw new IllegalStateException("Não é possível excluir esta peça, pois ela está " +
+                                            "associada a " + count + " Ordem(ns) de Serviço.");
+        }
+        
         pecaRepositorio.delete(peca);
     }
 }

@@ -2,6 +2,7 @@ package com.programacaoiii.assistencia_tecnica.controladores;
 
 import com.programacaoiii.assistencia_tecnica.dtos.OrdemServicoDto;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.OrdemServico;
+import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOSEnum;
 import com.programacaoiii.assistencia_tecnica.servicos.OrdemServicoServico;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +74,26 @@ public class OrdemServicoControlador {
     @PostMapping("/{id}/cancelar")
     public ResponseEntity<OrdemServico> cancelarOS(@PathVariable UUID id) {
         return ResponseEntity.ok(osServico.cancelarOS(id));
+    }
+    
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<List<OrdemServico>> buscarPorCliente(@PathVariable UUID id) {
+        return ResponseEntity.ok(osServico.buscarPorClienteId(id));
+    }
+
+    @GetMapping("/tecnico/{id}")
+    public ResponseEntity<List<OrdemServico>> buscarPorTecnico(@PathVariable UUID id) {
+        return ResponseEntity.ok(osServico.buscarPorTecnicoId(id));
+    }
+
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<OrdemServico>> buscarPorEstado(@PathVariable EstadoOSEnum estado) {
+        return ResponseEntity.ok(osServico.buscarPorEstado(estado));
+    }
+
+    @GetMapping("/estado/{estado}/tecnico/{id}")
+    public ResponseEntity<List<OrdemServico>> buscarPorEstadoETecnico(
+            @PathVariable EstadoOSEnum estado, @PathVariable UUID id) {
+        return ResponseEntity.ok(osServico.buscarPorEstadoETecnicoId(estado, id));
     }
 }

@@ -15,25 +15,25 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class AtendenteControlador {
 
-    private final AtendenteServico atendenteControlador;
+    private final AtendenteServico atendenteServico;
 
     public AtendenteControlador(AtendenteServico atendenteControlador) {
-        this.atendenteControlador = atendenteControlador;
+        this.atendenteServico = atendenteControlador;
     }
 
     @GetMapping
     public ResponseEntity<List<Atendente>> buscarTodos() {
-        return ResponseEntity.ok(atendenteControlador.buscarTodos());
+        return ResponseEntity.ok(atendenteServico.buscarTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Atendente> buscarPorId(@PathVariable UUID id) {
-        return ResponseEntity.ok(atendenteControlador.buscarPorId(id));
+        return ResponseEntity.ok(atendenteServico.buscarPorId(id));
     }
 
     @PostMapping
     public ResponseEntity<Atendente> salvar(@RequestBody PessoaDto dto) {
-        Atendente novoAtendente = atendenteControlador.salvar(dto);
+        Atendente novoAtendente = atendenteServico.salvar(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(novoAtendente.getId()).toUri();
         return ResponseEntity.created(uri).body(novoAtendente);
@@ -41,12 +41,17 @@ public class AtendenteControlador {
 
     @PutMapping("/{id}")
     public ResponseEntity<Atendente> atualizar(@PathVariable UUID id, @RequestBody PessoaDto dto) {
-        return ResponseEntity.ok(atendenteControlador.atualizar(id, dto));
+        return ResponseEntity.ok(atendenteServico.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable UUID id) {
-        atendenteControlador.excluir(id);
+        atendenteServico.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Atendente> buscarPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(atendenteServico.buscarPorCpf(cpf));
     }
 }

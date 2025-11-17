@@ -4,6 +4,8 @@ import com.programacaoiii.assistencia_tecnica.modelos.entidades.PessoaAbstrato;
 import com.programacaoiii.assistencia_tecnica.dtos.PessoaDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,14 +20,18 @@ public abstract class PessoaServicoAbstrato<
         this.repositorio = repositorio;
     }
 
-    @Transactional
-    public abstract E salvar(PessoaDto dto); // A criação é específica
-
-    @Transactional(readOnly = true)
-    public List<E> buscarTodos() {
-        return repositorio.findAll();
+    protected void validarIdade(LocalDate dataNascimento) {
+        if (dataNascimento == null) {
+            throw new IllegalStateException("A data de nascimento é obrigatória.");
+        }
+        int idade = Period.between(dataNascimento, LocalDate.now()).getYears();
+        if (idade < 18) {
+            throw new IllegalStateException("A pessoa deve ter pelo menos 18 anos. Idade calculada: " + idade);
+        }
     }
 
+    @Transactional
+    public abstract E salvar(PessoaDto dto);
     @Transactional(readOnly = true)
     public E buscarPorId(UUID id) {
                                   
@@ -35,11 +41,18 @@ public abstract class PessoaServicoAbstrato<
             ));
     }
 
+    @Transactional(readOnly = true)
+    public List<E> buscarTodos() {
+        return repositorio.findAll();
+    }
+
+
     @Transactional
     public E atualizar(UUID id, PessoaDto dto) {
-        E entidadeExistente = buscarPorId(id); // Reusa o método de busca
+        validarIdade(dto.dataNascimento());
+        
+        E entidadeExistente = buscarPorId(id); 
 
-        // Atualiza os campos da PessoaAbstrata
         entidadeExistente.setNome(dto.nome());
         entidadeExistente.setCpf(dto.cpf());
         entidadeExistente.setDataNascimento(dto.dataNascimento());
@@ -51,8 +64,6 @@ public abstract class PessoaServicoAbstrato<
     @Transactional
     public void excluir(UUID id) {
         E entidade = buscarPorId(id);
-        // Aqui poderiam entrar regras de negócio genéricas
-        // antes de excluir.
         repositorio.delete(entidade);
     }
 }

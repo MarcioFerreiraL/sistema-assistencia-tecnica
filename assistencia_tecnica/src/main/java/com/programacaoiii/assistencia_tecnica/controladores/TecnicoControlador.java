@@ -49,4 +49,9 @@ public class TecnicoControlador {
         tecnicoServico.excluir(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Tecnico> buscarPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(tecnicoServico.buscarPorCpf(cpf));
+    }
 }

@@ -12,11 +12,6 @@ public class AssistenciaTecnicaAplicacao {
 
 }
 
-// fazer o programa rodar.
-// fazer tratamento de erros (tem que fazer)
-// fazer as regras de negocio (tem que fazer)
-// fazer a api(controladores) (tem que fazer)
-
 //fazer os testes (é bom fazer)
 
-//fazer graficos visuais com vue (se der tempo, faz)
+// ajeitar o front end

@@ -11,5 +11,7 @@ import java.util.UUID;
 public interface AdministradorRepositorio extends JpaRepository<Administrador, UUID>{
 
 	Optional<Cliente> findAllByCpf(String cpf);
+
+	Optional<Administrador> findByCpf(String cpf);
 	
 }

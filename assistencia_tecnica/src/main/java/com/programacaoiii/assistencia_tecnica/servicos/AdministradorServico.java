@@ -3,11 +3,13 @@ package com.programacaoiii.assistencia_tecnica.servicos;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.Administrador;
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.Cliente;
 import com.programacaoiii.assistencia_tecnica.repositorios.AdministradorRepositorio;
+
 import com.programacaoiii.assistencia_tecnica.dtos.PessoaDto;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdministradorServico extends PessoaServicoAbstrato<Administrador, AdministradorRepositorio> {
@@ -24,6 +26,8 @@ public class AdministradorServico extends PessoaServicoAbstrato<Administrador, A
             throw new IllegalStateException("Já existe um Cliente com o CPF: " + dto.cpf());
         }
         
+        validarIdade(dto.dataNascimento());
+        
         Administrador tecnico = new Administrador(
             dto.nome(), 
             dto.cpf(), 
@@ -31,5 +35,11 @@ public class AdministradorServico extends PessoaServicoAbstrato<Administrador, A
             dto.endereco()
         );
         return repositorio.save(tecnico);
+    }
+    
+    @Transactional(readOnly = true)
+    public Administrador buscarPorCpf(String cpf) {
+        return repositorio.findByCpf(cpf)
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Administrador com CPF " + cpf + " não encontrado."));
     }
 }

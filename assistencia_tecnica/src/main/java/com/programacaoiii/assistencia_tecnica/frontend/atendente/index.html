@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal do Atendente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Portal do Atendente</a>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#" id="nome-usuario"></a></li>
+                <li class="nav-item"><button class="btn btn-outline-warning btn-sm" id="btn-logout">Sair</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="os-tab" data-bs-toggle="tab" data-bs-target="#os-pane" type="button">Abrir Ordem de Serviço</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes-pane" type="button">Gerir Clientes</button>
+            </li>
+        </ul>
+
+        <div class="tab-content p-3 card" id="myTabContent">
+            <div class="tab-pane fade show active" id="os-pane" role="tabpanel">
+                <h3 class="mb-3">Nova Ordem de Serviço</h3>
+                <div id="alerta-os" class="alert d-none"></div>
+                
+                <form id="form-os">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">1. Cliente</label>
+                            <select id="select-cliente" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">2. Hardware do Cliente</label>
+                            <select id="select-hardware" class="form-select" required disabled></select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">3. Técnico (Opcional)</label>
+                            <select id="select-tecnico" class="form-select"></select>
+                        </div>
+                         <div class="col-md-6 mb-3">
+                            <label class="form-label">4. Valor Orçamento (Inicial)</label>
+                            <input type="number" id="os-valor" class="form-control" value="0.0">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">5. Descrição do Problema</label>
+                            <textarea id="os-descricao" class="form-control" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Abrir OS</button>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="clientes-pane" role="tabpanel">
+                <h3 class="mb-3">Novo Cliente</h3>
+                <div id="alerta-cliente" class="alert d-none"></div>
+                <form id="form-cliente">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label class="form-label">Nome:</label><input type="text" id="cli-nome" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">CPF:</label><input type="text" id="cli-cpf" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Data Nasc. (AAAA-MM-DD):</label><input type="date" id="cli-data" class="form-control" required></div>
+                        <div class="col-12 mb-3"><label class="form-label">Endereço:</label><input type="text" id="cli-endereco" class="form-control"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Cliente</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../app.js"></script>
+    <script>
+        // Referências dos <select>
+        const selectCliente = document.getElementById('select-cliente');
+        const selectHardware = document.getElementById('select-hardware');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuario = Auth.checkAuth('atendente');
+            document.getElementById('nome-usuario').textContent = `Olá, ${usuario.nome}`;
+            document.getElementById('btn-logout').addEventListener('click', Auth.logout);
+
+            // Carrega os dropdowns para a aba "Nova OS"
+            Utils.preencherSelect('select-cliente', Api.getClientes, 'nome', 'id');
+            Utils.preencherSelect('select-tecnico', Api.getTecnicos, 'nome', 'id');
+        });
+
+        // REGRA: Quando o cliente muda, carrega os hardwares dele
+        selectCliente.addEventListener('change', async () => {
+            const clienteId = selectCliente.value;
+            if (!clienteId) {
+                selectHardware.disabled = true;
+                selectHardware.innerHTML = '<option>Selecione um cliente...</option>';
+                return;
+            }
+            
+            // O endpoint /api/clientes/{id} já retorna o cliente com a lista de hardwares
+            const response = await fetch(`${API_URL}/clientes/${clienteId}`);
+            const cliente = await response.json();
+            
+            selectHardware.innerHTML = '<option value="">Selecione um hardware...</option>';
+            if (cliente.hardware && cliente.hardware.length > 0) {
+                 cliente.hardware.forEach(hw => {
+                    selectHardware.add(new Option(hw.tipoHardware, hw.numeroSerie));
+                 });
+            } else {
+                selectHardware.innerHTML = '<option>Este cliente não possui hardware</option>';
+            }
+            selectHardware.disabled = false;
+        });
+
+        // Salvar Novo Cliente
+        document.getElementById('form-cliente').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dto = {
+                nome: document.getElementById('cli-nome').value,
+                cpf: document.getElementById('cli-cpf').value,
+                dataNascimento: document.getElementById('cli-data').value,
+                endereco: document.getElementById('cli-endereco').value
+            };
+            
+            const response = await Api.salvar('clientes', dto);
+            if (response.ok) {
+                Utils.mostrarAlerta('alerta-cliente', 'Cliente salvo com sucesso!', 'success');
+                e.target.reset(); // Limpa o formulário
+                // Recarrega a lista de clientes no formulário de OS
+                Utils.preencherSelect('select-cliente', Api.getClientes, 'nome', 'id');
+            } else {
+                const erro = await response.text(); // Pega o erro (ex: CPF duplicado)
+                Utils.mostrarAlerta('alerta-cliente', `Erro: ${erro}`, 'danger');
+            }
+        });
+
+        // Salvar Nova OS
+        document.getElementById('form-os').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const dto = {
+                clienteId: selectCliente.value,
+                hardwareId: selectHardware.value,
+                tecnicoId: document.getElementById('select-tecnico').value || null,
+                descricao: document.getElementById('os-descricao').value,
+                valorOrcamento: parseFloat(document.getElementById('os-valor').value)
+            };
+
+            // Validação simples
+            if (!dto.clienteId || !dto.hardwareId || !dto.descricao) {
+                 Utils.mostrarAlerta('alerta-os', 'Cliente, Hardware e Descrição são obrigatórios.', 'danger');
+                 return;
+            }
+            
+            const response = await Api.salvar('os', dto);
+            if (response.ok) {
+                Utils.mostrarAlerta('alerta-os', 'OS aberta com sucesso!', 'success');
+                e.target.reset();
+                // Limpa os selects
+                selectHardware.disabled = true;
+                selectHardware.innerHTML = '<option>Selecione um cliente...</option>';
+                Utils.preencherSelect('select-cliente', Api.getClientes, 'nome', 'id');
+                Utils.preencherSelect('select-tecnico', Api.getTecnicos, 'nome', 'id');
+            } else {
+                const erro = await response.text();
+                Utils.mostrarAlerta('alerta-os', `Erro: ${erro}`, 'danger');
+            }
+        });
+    </script>
+</body>
+</html>

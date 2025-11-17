@@ -121,5 +121,25 @@ public class OrdemServicoServico {
         os.orcamentar(); 
         return osRepositorio.save(os);
     }
+    
+    @Transactional(readOnly = true)
+    public List<OrdemServico> buscarPorClienteId(UUID clienteId) {
+        return osRepositorio.findByClienteId(clienteId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrdemServico> buscarPorTecnicoId(UUID tecnicoId) {
+        return osRepositorio.findByTecnicoId(tecnicoId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrdemServico> buscarPorEstado(EstadoOSEnum estado) {
+        return osRepositorio.findByEstado(estado);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<OrdemServico> buscarPorEstadoETecnicoId(EstadoOSEnum estado, UUID tecnicoId) {
+        return osRepositorio.findByEstadoAndTecnicoId(estado, tecnicoId);
+    }
 
 }

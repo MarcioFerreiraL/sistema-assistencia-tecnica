@@ -10,4 +10,6 @@ public interface AtendenteRepositorio extends JpaRepository<Atendente, UUID>{
 
 	Optional<Cliente> findAllByCpf(String cpf);
 
+	Optional<Atendente> findByCpf(String cpf);
+
 }
