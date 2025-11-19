@@ -7,4 +7,4 @@ public enum EstadoOSEnum {
     EM_REPARO,
     FINALIZADA,
     CANCELADA;
-} // mudar para EstadoOSEnum e outros enums
+}

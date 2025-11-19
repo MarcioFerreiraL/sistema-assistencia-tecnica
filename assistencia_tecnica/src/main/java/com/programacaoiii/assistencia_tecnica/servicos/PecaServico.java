@@ -6,9 +6,7 @@ import com.programacaoiii.assistencia_tecnica.repositorios.OrdemServicoRepositor
 import com.programacaoiii.assistencia_tecnica.repositorios.PecaRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class PecaServico {
@@ -36,13 +34,13 @@ public class PecaServico {
     }
 
     @Transactional(readOnly = true)
-    public Peca buscarPecaPorId(UUID id) {
+    public Peca buscarPecaPorId(Long id) {
         return pecaRepositorio.findById(id)
             .orElseThrow(() -> new RecursoNaoEncontradoException("Peça não encontrada com ID: " + id));
     }
 
     @Transactional
-    public Peca atualizarPeca(UUID id, PecaDto dto) {
+    public Peca atualizarPeca(Long id, PecaDto dto) {
         Peca pecaExistente = buscarPecaPorId(id);
 
         pecaExistente.setNome(dto.nome());
@@ -52,7 +50,7 @@ public class PecaServico {
     }
 
     @Transactional
-    public void excluirPeca(UUID id) {
+    public void excluirPeca(Long id) {
         Peca peca = buscarPecaPorId(id); 
         
         long count = ordemServicoRepositorio.countByPecaId(id);

@@ -1,8 +1,9 @@
 package com.programacaoiii.assistencia_tecnica.modelos.entidades;
 
 import java.time.LocalDate;
-import java.util.UUID;
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
@@ -10,7 +11,8 @@ import jakarta.persistence.MappedSuperclass;
 public abstract class PessoaAbstrato{
 	
 	@Id
-	private UUID id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String nome;
 	
 	@Column(nullable = false, unique = true)
@@ -25,14 +27,13 @@ public abstract class PessoaAbstrato{
 	
 	public PessoaAbstrato(String nome, String cpf, LocalDate dataNascimento, String endereco) {
 		super();
-		this.id = UUID.randomUUID();
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
 		this.endereco = endereco;
 	}
 	
-	public UUID getId() {
+	public Long getId() {
 		return id;
 	}
 

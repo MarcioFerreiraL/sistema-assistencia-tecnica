@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/hardware")
@@ -27,7 +26,7 @@ public class HardwareControlador {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hardware> buscarHardwarePorId(@PathVariable UUID id) {
+    public ResponseEntity<Hardware> buscarHardwarePorId(@PathVariable Long id) {
         return ResponseEntity.ok(hardwareServico.buscarHardwarePorId(id));
     }
 
@@ -40,12 +39,12 @@ public class HardwareControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Hardware> atualizarHardware(@PathVariable UUID id, @RequestBody HardwareDto dto) {
+    public ResponseEntity<Hardware> atualizarHardware(@PathVariable Long id, @RequestBody HardwareDto dto) {
         return ResponseEntity.ok(hardwareServico.atualizarHardware(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirHardware(@PathVariable UUID id) {
+    public ResponseEntity<Void> excluirHardware(@PathVariable Long id) {
         hardwareServico.excluirHardware(id);
         return ResponseEntity.noContent().build();
     }

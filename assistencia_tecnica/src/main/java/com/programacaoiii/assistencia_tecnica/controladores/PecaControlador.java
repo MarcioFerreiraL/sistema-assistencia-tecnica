@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/pecas")
@@ -27,7 +26,7 @@ public class PecaControlador {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Peca> buscarPecaPorId(@PathVariable UUID id) {
+    public ResponseEntity<Peca> buscarPecaPorId(@PathVariable Long id) {
         return ResponseEntity.ok(pecaServico.buscarPecaPorId(id));
     }
 
@@ -40,12 +39,12 @@ public class PecaControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Peca> atualizarPeca(@PathVariable UUID id, @RequestBody PecaDto dto) {
+    public ResponseEntity<Peca> atualizarPeca(@PathVariable Long id, @RequestBody PecaDto dto) {
         return ResponseEntity.ok(pecaServico.atualizarPeca(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirPeca(@PathVariable UUID id) {
+    public ResponseEntity<Void> excluirPeca(@PathVariable Long id) {
         pecaServico.excluirPeca(id);
         return ResponseEntity.noContent().build();
     }

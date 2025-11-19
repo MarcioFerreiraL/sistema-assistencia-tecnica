@@ -25,10 +25,10 @@ public class ManipuladorExcecoesGlobal {
     
     // Captura qualquer outro erro inesperado.
      
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public ResponseEntity<String> tratarErroGenerico(Exception e) {
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body("Ocorreu um erro interno inesperado no servidor.");
-    }
+    }*/
 }

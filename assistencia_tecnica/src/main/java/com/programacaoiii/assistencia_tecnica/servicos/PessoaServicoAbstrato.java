@@ -7,11 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class PessoaServicoAbstrato<
     E extends PessoaAbstrato, 
-    R extends JpaRepository<E, UUID>
+    R extends JpaRepository<E, Long>
 > {
 
     protected final R repositorio;
@@ -33,7 +32,7 @@ public abstract class PessoaServicoAbstrato<
     @Transactional
     public abstract E salvar(PessoaDto dto);
     @Transactional(readOnly = true)
-    public E buscarPorId(UUID id) {
+    public E buscarPorId(Long id) {
                                   
         return repositorio.findById(id)
             .orElseThrow(() -> new RecursoNaoEncontradoException(
@@ -48,7 +47,7 @@ public abstract class PessoaServicoAbstrato<
 
 
     @Transactional
-    public E atualizar(UUID id, PessoaDto dto) {
+    public E atualizar(Long id, PessoaDto dto) {
         validarIdade(dto.dataNascimento());
         
         E entidadeExistente = buscarPorId(id); 
@@ -62,7 +61,7 @@ public abstract class PessoaServicoAbstrato<
     }
 
     @Transactional
-    public void excluir(UUID id) {
+    public void excluir(Long id) {
         E entidade = buscarPorId(id);
         repositorio.delete(entidade);
     }

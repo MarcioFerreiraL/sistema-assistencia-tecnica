@@ -7,9 +7,7 @@ import com.programacaoiii.assistencia_tecnica.repositorios.ClienteRepositorio;
 import com.programacaoiii.assistencia_tecnica.repositorios.HardwareRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class HardwareServico {
@@ -40,13 +38,13 @@ public class HardwareServico {
     }
 
     @Transactional(readOnly = true)
-    public Hardware buscarHardwarePorId(UUID id) {
+    public Hardware buscarHardwarePorId(Long id) {
         return hardwareRepositorio.findById(id)
             .orElseThrow(() -> new RecursoNaoEncontradoException("Hardware não encontrado com ID: " + id));
     }
 
     @Transactional
-    public Hardware atualizarHardware(UUID id, HardwareDto dto) {
+    public Hardware atualizarHardware(Long id, HardwareDto dto) {
         Hardware hardwareExistente = buscarHardwarePorId(id);
         
         // Se o cliente mudou, busca o novo cliente
@@ -62,7 +60,7 @@ public class HardwareServico {
     }
 
     @Transactional
-    public void excluirHardware(UUID id) {
+    public void excluirHardware(Long id) {
         Hardware hardware = buscarHardwarePorId(id);
         hardwareRepositorio.delete(hardware);
     }

@@ -26,7 +26,6 @@ public class Hardware extends ProdutoAbstrato{
 	
 	public Hardware(TipoHardwareEnum tipoHardware, Cliente cliente) {
 		super();
-		initUUID();
 		this.tipoHardware = tipoHardware;
 		this.cliente_id = cliente;
 	}

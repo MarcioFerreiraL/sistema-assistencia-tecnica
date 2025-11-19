@@ -1,0 +1,9 @@
+spring.application.name=Assistencia Tecnica
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/assistencia_tecnica
+spring.datasource.username=postgres
+spring.datasource.password=5002
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+spring.jpa.show-sql=true

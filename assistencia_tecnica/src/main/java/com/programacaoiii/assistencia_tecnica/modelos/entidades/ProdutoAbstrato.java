@@ -1,22 +1,21 @@
 package com.programacaoiii.assistencia_tecnica.modelos.entidades;
 
-import java.util.UUID;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class ProdutoAbstrato {
 	@Id
-	private UUID numeroSerie;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long numeroSerie;
 
 	public ProdutoAbstrato() {
     }
 	
-	public void initUUID() {
-		this.numeroSerie = UUID.randomUUID();
-	}
 
-	public UUID getNumeroSerie() {
+	public Long getNumeroSerie() {
 		return numeroSerie;
 	}
 	

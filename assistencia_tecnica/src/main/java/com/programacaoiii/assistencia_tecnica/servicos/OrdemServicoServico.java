@@ -123,12 +123,12 @@ public class OrdemServicoServico {
     }
     
     @Transactional(readOnly = true)
-    public List<OrdemServico> buscarPorClienteId(UUID clienteId) {
+    public List<OrdemServico> buscarPorClienteId(Long clienteId) {
         return osRepositorio.findByClienteId(clienteId);
     }
 
     @Transactional(readOnly = true)
-    public List<OrdemServico> buscarPorTecnicoId(UUID tecnicoId) {
+    public List<OrdemServico> buscarPorTecnicoId(Long tecnicoId) {
         return osRepositorio.findByTecnicoId(tecnicoId);
     }
 
@@ -138,7 +138,7 @@ public class OrdemServicoServico {
     }
     
     @Transactional(readOnly = true)
-    public List<OrdemServico> buscarPorEstadoETecnicoId(EstadoOSEnum estado, UUID tecnicoId) {
+    public List<OrdemServico> buscarPorEstadoETecnicoId(EstadoOSEnum estado, Long tecnicoId) {
         return osRepositorio.findByEstadoAndTecnicoId(estado, tecnicoId);
     }
 

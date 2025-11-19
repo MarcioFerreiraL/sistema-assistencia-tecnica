@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID; 
 
 @Service
 public class TecnicoServico extends PessoaServicoAbstrato<Tecnico, TecnicoRepositorio> {
@@ -41,7 +40,7 @@ public class TecnicoServico extends PessoaServicoAbstrato<Tecnico, TecnicoReposi
     
     @Override
     @Transactional
-    public void excluir(UUID id) {
+    public void excluir(Long id) {
         List<OrdemServico> listaOS = ordemServicoRepositorio.findByTecnicoId(id);
         
         if (!listaOS.isEmpty()) {

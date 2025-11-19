@@ -77,12 +77,12 @@ public class OrdemServicoControlador {
     }
     
     @GetMapping("/cliente/{id}")
-    public ResponseEntity<List<OrdemServico>> buscarPorCliente(@PathVariable UUID id) {
+    public ResponseEntity<List<OrdemServico>> buscarPorCliente(@PathVariable Long id) {
         return ResponseEntity.ok(osServico.buscarPorClienteId(id));
     }
 
     @GetMapping("/tecnico/{id}")
-    public ResponseEntity<List<OrdemServico>> buscarPorTecnico(@PathVariable UUID id) {
+    public ResponseEntity<List<OrdemServico>> buscarPorTecnico(@PathVariable Long id) {
         return ResponseEntity.ok(osServico.buscarPorTecnicoId(id));
     }
 
@@ -93,7 +93,7 @@ public class OrdemServicoControlador {
 
     @GetMapping("/estado/{estado}/tecnico/{id}")
     public ResponseEntity<List<OrdemServico>> buscarPorEstadoETecnico(
-            @PathVariable EstadoOSEnum estado, @PathVariable UUID id) {
+            @PathVariable EstadoOSEnum estado, @PathVariable Long id) {
         return ResponseEntity.ok(osServico.buscarPorEstadoETecnicoId(estado, id));
     }
 }

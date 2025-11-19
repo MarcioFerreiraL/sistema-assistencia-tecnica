@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/tecnicos")
@@ -27,7 +26,7 @@ public class TecnicoControlador {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tecnico> buscarPorId(@PathVariable UUID id) {
+    public ResponseEntity<Tecnico> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(tecnicoServico.buscarPorId(id));
     }
 
@@ -40,12 +39,12 @@ public class TecnicoControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tecnico> atualizar(@PathVariable UUID id, @RequestBody PessoaDto dto) {
+    public ResponseEntity<Tecnico> atualizar(@PathVariable Long id, @RequestBody PessoaDto dto) {
         return ResponseEntity.ok(tecnicoServico.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable UUID id) {
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         tecnicoServico.excluir(id);
         return ResponseEntity.noContent().build();
     }

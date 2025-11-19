@@ -22,7 +22,6 @@ public class Peca extends ProdutoAbstrato{
 	
 	public Peca(String nome, TipoPecaEnum tipoPeca) {
 		super();
-		initUUID();
 		this.nome = nome;
 		this.tipoPeca = tipoPeca;
 	}
