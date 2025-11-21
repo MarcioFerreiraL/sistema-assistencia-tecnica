@@ -75,6 +75,16 @@ public class OrdemServicoServico {
         osExistente.setValorOrcamento(dto.valorOrcamento());
         osExistente.setDescricao(dto.descricao());
 
+        if (dto.tecnicoId() != null) {
+            Tecnico tecnico = tecnicoRepositorio.findById(dto.tecnicoId())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Técnico não encontrado com ID: " + dto.tecnicoId()));
+            osExistente.setTecnicoResponsavel(tecnico);
+            
+            if (osExistente.getEstado() == EstadoOSEnum.ABERTA) {
+                 osExistente.setEstado(EstadoOSEnum.AGUARDANDO_ORCAMENTO);
+            }
+        }
+
         return osRepositorio.save(osExistente);
     }
 
