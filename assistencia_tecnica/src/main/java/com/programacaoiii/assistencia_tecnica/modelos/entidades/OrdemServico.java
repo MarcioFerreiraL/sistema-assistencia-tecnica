@@ -82,7 +82,6 @@ public class OrdemServico implements Serializable{
 	}
 	
 	public OrdemServico(double valorOrcamento, String descricao, Cliente cliente, Hardware hardware, Tecnico tecnicoResponsavel) {
-		this.id = UUID.randomUUID();
 		this.valorOrcamento = valorOrcamento;
 		this.descricao = descricao;
 		this.cliente = cliente;
