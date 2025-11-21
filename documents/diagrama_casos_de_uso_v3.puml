@@ -1,0 +1,79 @@
+@startuml
+' Título do Diagrama
+title Diagrama de Casos de Uso - Assistência Técnica
+
+' Atores
+actor Administrador as admin
+actor Atendente as atend
+actor Tecnico as tec
+actor Cliente as clt
+
+left to right direction
+
+' Pacote do Sistema
+rectangle "Sistema de Assistência Técnica" {
+    
+    ' Casos de Uso de Gerenciamento
+    usecase "Abrir OS" as UC_ABRIR
+    usecase "Atualizar OS" as UC_ATUALIZAR
+    usecase "Requisitar Exclusão OS" as UC_REQ_EXCLUIR
+    usecase "Excluir OS" as UC_EXCLUIR
+    
+    ' Casos de Uso do Fluxo de Reparo
+    usecase "Fazer Orçamento" as UC_ORCAMENTO
+    usecase "Executar Reparo" as UC_REPARO
+    usecase "Finalizar OS" as UC_FINALIZAR
+    
+    ' Casos de Uso do Cliente
+    usecase "Aprovar Orçamento" as UC_APROVAR
+    usecase "Cancelar OS" as UC_CANCELAR
+    usecase "Ver Hardwares" as UC_HARDWARE
+    
+    ' Casos de Uso de Relatórios
+    usecase "Gerar Relatórios" as UC_RELATORIOS
+    
+    ' Caso de Uso Comum (Opcional)
+    ' usecase "Acompanhar Status OS" as UC_ACOMPANHAR
+}
+
+' Relacionamentos Ator -> Caso de Uso
+
+' Atendente
+atend --> UC_ABRIR
+atend --> UC_ATUALIZAR
+atend --> UC_REQ_EXCLUIR
+' atend --> UC_ACOMPANHAR
+
+' Administrador
+admin --> UC_ABRIR
+admin --> UC_ATUALIZAR
+admin --> UC_EXCLUIR
+admin --> UC_RELATORIOS
+' admin --> UC_ACOMPANHAR
+
+' Tecnico
+tec --> UC_ORCAMENTO
+tec --> UC_REPARO
+tec --> UC_FINALIZAR
+' tec --> UC_ACOMPANHAR
+
+' Cliente
+clt --> UC_APROVAR
+clt --> UC_CANCELAR
+clt --> UC_HARDWARE
+' clt --> UC_ACOMPANHAR
+
+' Relacionamentos entre Casos de Uso
+' O Administrador "estende" a requisição do Atendente para de fato excluir
+UC_EXCLUIR .> UC_REQ_EXCLUIR : <<extends>>
+    
+' Podemos agrupar os relatórios
+usecase "Ver Relatório Financeiro" as UC_REL_FIN
+usecase "Ver Relatório Estoque" as UC_REL_EST
+usecase "Ver Relatório OS" as UC_REL_OS
+
+UC_RELATORIOS <.. UC_REL_FIN : <<include>>
+UC_RELATORIOS <.. UC_REL_EST : <<include>>
+UC_RELATORIOS <.. UC_REL_OS : <<include>>
+
+@enduml
