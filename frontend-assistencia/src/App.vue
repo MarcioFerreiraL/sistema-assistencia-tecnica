@@ -1,27 +1,24 @@
 <template>
+  <ToastContainer />
   <router-view />
 </template>
 
 <script setup>
-// Nenhuma lógica necessária aqui no componente raiz por enquanto
+import ToastContainer from './components/ToastContainer.vue';
+import { watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+// Títulos Dinâmicos (Melhoria #5)
+watch(route, (to) => {
+  const titles = {
+    'login': 'Login - TechRepair',
+    'cliente': 'Área do Cliente - TechRepair',
+    'tecnico': 'Área Técnica - TechRepair',
+    'atendente': 'Atendimento - TechRepair',
+    'admin': 'Administração - TechRepair'
+  };
+  document.title = titles[to.name] || 'TechRepair Sistema';
+}, { immediate: true });
 </script>
-
-<style>
-/* Reset básico para garantir que a tela ocupe tudo */
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-}
-</style>
