@@ -1,0 +1,36 @@
+:root {
+  --color-primary: #2563eb;       /* Azul vibrante para ações principais */
+  --color-primary-dark: #1e40af;  /* Azul escuro para hover */
+  --color-secondary: #64748b;     /* Cinza azulado para elementos secundários */
+  --color-background: #f8fafc;    /* Fundo muito levemente azulado/cinza */
+  --color-surface: #ffffff;       /* Branco puro para cartões */
+  
+  --color-success: #10b981;       /* Verde Esmeralda */
+  --color-warning: #f59e0b;       /* Âmbar */
+  --color-danger: #ef4444;        /* Vermelho Suave */
+  --color-info: #3b82f6;          /* Azul Info */
+
+  --color-text-main: #0f172a;     /* Quase preto para leitura */
+  --color-text-muted: #94a3b8;    /* Cinza claro para legendas */
+  
+  --color-border: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius: 8px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text-main);
+  background: var(--color-background);
+  line-height: 1.6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}

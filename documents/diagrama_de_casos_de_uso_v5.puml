@@ -1,0 +1,62 @@
+@startuml
+title Diagrama de Casos de Uso - Assistência Técnica (Refatorado)
+
+left to right direction
+
+actor "Atendente" as atend
+actor "Técnico" as tec
+actor "Administrador" as admin
+actor "Cliente" as clt
+
+rectangle "Sistema de Assistência Técnica" {
+
+    package "Gestão de Cadastros" {
+        usecase "Cadastrar Cliente" as UC_CAD_CLIENTE
+        usecase "Cadastrar/Editar Peça" as UC_GEST_PECAS
+    }
+
+    package "Ciclo de Vida da OS" {
+        usecase "Abrir Nova OS" as UC_ABRIR
+        usecase "Consultar OS" as UC_CONSULTAR
+        usecase "Assumir OS (Atribuir-se)" as UC_ASSUMIR
+        usecase "Fazer Orçamento" as UC_ORCAMENTO
+        usecase "Aprovar/Recusar Orçamento" as UC_APROVAR
+        usecase "Executar Reparo" as UC_REPARO
+        usecase "Finalizar OS" as UC_FINALIZAR
+        usecase "Cancelar OS" as UC_CANCELAR
+    }
+
+    package "Administrativo" {
+        usecase "Gerar Relatórios" as UC_RELATORIOS
+        usecase "Excluir OS" as UC_EXCLUIR
+    }
+}
+
+' Relacionamentos do Atendente
+atend --> UC_CAD_CLIENTE
+atend --> UC_ABRIR
+atend --> UC_CONSULTAR
+
+' Relacionamentos do Técnico
+tec --> UC_CONSULTAR : (Visualizar Fila/Minhas)
+tec --> UC_ASSUMIR
+tec --> UC_ORCAMENTO
+tec --> UC_REPARO
+tec --> UC_FINALIZAR
+
+' Relacionamentos do Cliente
+clt --> UC_CONSULTAR : (Visualizar Histórico)
+clt --> UC_APROVAR
+clt --> UC_CANCELAR
+
+' Relacionamentos do Administrador
+admin --> UC_RELATORIOS
+admin --> UC_EXCLUIR
+admin --> UC_GEST_PECAS
+
+' Detalhes dos Casos de Uso (Includes/Extends)
+UC_ABRIR ..> UC_CAD_CLIENTE : <<include>> (se novo)
+UC_REPARO ..> UC_CONSULTAR : <<include>>
+UC_ORCAMENTO ..> UC_ASSUMIR : <<include>> (deve ser responsável)
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+title Casos de Uso - Sistema de Ordem de Serviço v2
+
+actor tecnico as tec
+actor administrador as adm
+actor atendente as atd
+actor cliente as clt
+
+left to right direction 
+
+rectangle Sistema {
+    usecase "Abrir OS" as UC1
+    usecase "Fazer Orçamento" as UC2
+    usecase "Aprovar Orçamento" as UC3
+    usecase "Executar Reparo" as UC4
+    usecase "Finalizar OS" as UC5
+    usecase "Cancelar OS" as UC6
+    
+    usecase "Ver OS" as UC_VER
+    usecase "Editar OS" as UC_EDIT
+    usecase "Requisitar Exclusão" as UC_REQ_EXCLUSAO
+    usecase "Excluir OS" as UC_EXCLUIR
+    
+    usecase "Ver Relatórios" as UC_REL
+}
+
+atd -- UC1
+atd -- UC_EDIT
+atd -- UC_REQ_EXCLUSAO
+atd -- UC_VER
+
+adm -- UC1
+adm -- UC_EDIT
+adm -- UC_EXCLUIR
+adm -- UC_REL
+adm -- UC_VER
+
+tec -- UC2
+tec -- UC4
+tec -- UC5
+tec -- UC_VER
+
+clt -- UC3
+clt -- UC6
+clt -- UC_VER
+
+UC_REQ_EXCLUSAO .> UC_EXCLUIR : <<extends>>
+@enduml
