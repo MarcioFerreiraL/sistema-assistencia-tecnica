@@ -1,0 +1,19 @@
+Querys:
+
+adicionar um administrador:
+
+INSERT INTO tb_administrador (nome, cpf, data_nascimento, endereco)
+VALUES ('Admin Padrao', '00000000000', '1990-01-01', 'Rua Teste, 1');
+
+apagar todos os dados e zerar os identity:
+
+TRUNCATE TABLE 
+    tb_os_pecas,
+    tb_ordem_servico,
+    tb_hardware,
+    tb_peca,
+    tb_cliente,
+    tb_tecnico,
+    tb_atendente,
+    tb_administrador
+RESTART IDENTITY CASCADE;
