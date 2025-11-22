@@ -1,0 +1,33 @@
+spring.application.name=Assistencia Tecnica
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/assistencia_tecnica
+spring.datasource.username=postgres
+spring.datasource.password=5002
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+spring.jpa.show-sql=true
+
+========================================================================
+
+spring.application.name=Assistencia Tecnica
+
+# --- Configuracao do H2 ---
+
+# URL de conexao
+spring.datasource.url=jdbc:h2:mem:assistencia_tecnica
+# Driver oficial do H2
+spring.datasource.driverClassName=org.h2.Driver
+# Usuario padrao
+spring.datasource.username=sa
+# Senha
+spring.datasource.password=
+
+# --- Configuracao do JPA/Hibernate para H2 ---
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# --- Habilita o Console do H2 no navegador ---
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
