@@ -7,6 +7,7 @@ import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.ReparoCo
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.ReparoNotebook;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.ReparoOutros;
 import com.programacaoiii.assistencia_tecnica.servicos.padroes.template.TemplateMethod;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -23,16 +24,13 @@ public class Tecnico extends PessoaAbstrato{
 	}
 
 	public void fazerOrcamento(OrdemServico os, float valor) {
-		// Lógica para adicionar orçamento
 	}
 	
 	public void assumirOS(OrdemServico os) {
-		// Lógica para se atribuir à OS
 	}
 	
 	public void executarOS(OrdemServico os) {
-		System.out.println("Técnico iniciando execução da OS #" + os.getId());
-        
+		
         TemplateMethod reparo;
         TipoHardwareEnum tipo = os.getHardware().getTipoHardware();
 
@@ -48,7 +46,6 @@ public class Tecnico extends PessoaAbstrato{
 
         reparo.executarProcessoReparo();
         
-        System.out.println("Técnico finalizou a EXECUÇÃO do reparo na OS #" + os.getId());
 	}
 	
 	public void finalizarOS(OrdemServico os) {

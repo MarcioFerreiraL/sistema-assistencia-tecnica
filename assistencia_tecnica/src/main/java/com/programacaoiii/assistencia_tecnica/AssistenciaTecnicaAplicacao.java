@@ -12,6 +12,5 @@ public class AssistenciaTecnicaAplicacao {
 
 }
 
-//fazer os testes (é bom fazer)
-
-// ajeitar o front end
+// fazer os testes
+// fazer sistema de login

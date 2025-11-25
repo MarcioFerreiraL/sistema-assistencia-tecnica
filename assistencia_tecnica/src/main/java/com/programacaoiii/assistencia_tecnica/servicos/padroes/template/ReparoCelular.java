@@ -17,4 +17,9 @@ public class ReparoCelular extends TemplateMethod {
     @Override
     protected void separarMateriais() {
     }
+
+	@Override
+	protected void limpezaFinal() {
+		
+	}
 }

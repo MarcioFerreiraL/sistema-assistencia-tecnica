@@ -1,7 +1,6 @@
 package com.programacaoiii.assistencia_tecnica.servicos;
 
 import com.programacaoiii.assistencia_tecnica.modelos.entidades.Administrador;
-import com.programacaoiii.assistencia_tecnica.modelos.entidades.Cliente;
 import com.programacaoiii.assistencia_tecnica.repositorios.AdministradorRepositorio;
 
 import com.programacaoiii.assistencia_tecnica.dtos.PessoaDto;
@@ -21,7 +20,7 @@ public class AdministradorServico extends PessoaServicoAbstrato<Administrador, A
     @Override
     public Administrador salvar(PessoaDto dto) {
     	
-        Optional<Cliente> jaExiste = repositorio.findAllByCpf(dto.cpf());
+        Optional<Administrador> jaExiste = repositorio.findAllByCpf(dto.cpf());
         if (jaExiste.isPresent()) {
             throw new IllegalStateException("Já existe um Cliente com o CPF: " + dto.cpf());
         }

@@ -8,9 +8,6 @@ public class EstadoEmReparo extends EstadoOSAbstrato {
     
     @Override
     public void executar(OrdemServico os) {
-        System.out.println("Ação: Executando o reparo (estado continua 'EM_REPARO')");
-
-        // Buscar o técnico responsável pela OS
         Tecnico tecnico = os.getTecnicoResponsavel();
 
         if (tecnico == null) {
@@ -22,13 +19,11 @@ public class EstadoEmReparo extends EstadoOSAbstrato {
 
     @Override
     public void finalizar(OrdemServico os) {
-        System.out.println("Transição: EM_REPARO -> FINALIZADA");
         os.setEstado(EstadoOSEnum.FINALIZADA);
     }
     
     @Override
     public void cancelar(OrdemServico os) {
-        System.out.println("Transição: EM_REPARO -> CANCELADA");
         os.setEstado(EstadoOSEnum.CANCELADA);
     }
 }
