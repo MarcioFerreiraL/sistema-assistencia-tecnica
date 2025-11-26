@@ -1,0 +1,194 @@
+@startuml
+
+title Diagrama de Classes - Sistema de Assistência Técnica
+
+left to right direction
+
+package "Modelos.Entidades" {
+
+    abstract class PessoaAbstrato {
+        - Long id
+        - String nome
+        - String cpf
+        - LocalDate dataNascimento
+        - String endereco
+        + getNome()
+        + getCpf()
+        .. getters/setters ..
+    }
+
+    abstract class ProdutoAbstrato {
+        - Long numeroSerie
+        + getNumeroSerie()
+    }
+
+    class Administrador {
+        + abrirOS()
+        + atualizarOS()
+        + excluirOS()
+        + verRelatorioFinanceiro()
+        + verRelatorioEstoque()
+        + verRelatorioOS()
+    }
+
+    class Atendente {
+        + abrirOS()
+        + atualizarOS()
+        + reqExclusaoOS()
+    }
+
+    class Cliente {
+        - List<Hardware> hardwares
+        + verHardwares()
+        + aprovarOrcamento()
+        + cancelarOS()
+    }
+
+    class Tecnico {
+        + fazerOrcamento()
+        + assumirOS()
+        + executarOS(OrdemServico os)
+        + finalizarOS()
+    }
+
+    class Hardware {
+        - TipoHardwareEnum tipoHardware
+        - Long cliente_id
+        + getTipoHardware()
+    }
+
+    class Peca {
+        - String nome
+        - TipoPecaEnum tipoPeca
+        + getNome()
+    }
+
+    class OrdemServico {
+        - UUID id
+        - double valorOrcamento
+        - String descricao
+        - String observacoesTecnicas
+        - Instant dataCriacao
+        - Instant dataAtualizacao
+        - EstadoOSEnum estado
+        - StateInterface comportamentoEstado
+        + inicializarEstado()
+        + aprovar()
+        + orcamentar()
+        + executar()
+        + finalizar()
+        + cancelar()
+    }
+}
+
+package "Modelos.Enums" {
+    enum EstadoOSEnum {
+        ABERTA
+        AGUARDANDO_ORCAMENTO
+        AGUARDANDO_APROVACAO
+        EM_REPARO
+        FINALIZADA
+        CANCELADA
+    }
+
+    enum TipoHardwareEnum {
+        COMPUTADOR
+        NOTEBOOK
+        CELULAR
+        OUTROS
+    }
+
+    enum TipoPecaEnum {
+        COMPUTADOR
+        NOTEBOOK
+        CELULAR
+        OUTROS
+    }
+}
+
+package "Servicos.Interfaces" {
+    interface Relatorio {
+        + verRelatorioEstoque()
+        + verRelatorioOS()
+    }
+}
+
+package "Servicos.Padroes.State" {
+    interface StateInterface {
+        + abrir(OrdemServico os)
+        + orcamentar(OrdemServico os)
+        + aprovar(OrdemServico os)
+        + executar(OrdemServico os)
+        + finalizar(OrdemServico os)
+        + cancelar(OrdemServico os)
+    }
+
+    abstract class EstadoOSAbstrato {
+        # proibir(String acao)
+    }
+
+    class EstadoAberta
+    class EstadoAguardandoOrcamento
+    class EstadoAguardandoAprovacao
+    class EstadoEmReparo
+    class EstadoFinalizada
+    class EstadoCancelada
+}
+
+package "Servicos.Padroes.Template" {
+    abstract class TemplateMethod {
+        + final executarProcessoReparo()
+        # abstract diagnosticarProblema()
+        # abstract separarMateriais()
+        # abstract realizarReparo()
+        # abstract realizarTestes()
+        # limpezaFinal()
+    }
+
+    class ReparoNotebook
+    class ReparoCelular
+    class ReparoComputador
+    class ReparoOutros
+}
+
+' Relacionamentos de Herança
+PessoaAbstrato <|-- Administrador
+PessoaAbstrato <|-- Atendente
+PessoaAbstrato <|-- Cliente
+PessoaAbstrato <|-- Tecnico
+
+ProdutoAbstrato <|-- Hardware
+ProdutoAbstrato <|-- Peca
+
+' Implementação de Interfaces
+Relatorio <|.. Administrador
+StateInterface <|.. EstadoOSAbstrato
+EstadoOSAbstrato <|-- EstadoAberta
+EstadoOSAbstrato <|-- EstadoAguardandoOrcamento
+EstadoOSAbstrato <|-- EstadoAguardandoAprovacao
+EstadoOSAbstrato <|-- EstadoEmReparo
+EstadoOSAbstrato <|-- EstadoFinalizada
+EstadoOSAbstrato <|-- EstadoCancelada
+
+TemplateMethod <|-- ReparoNotebook
+TemplateMethod <|-- ReparoCelular
+TemplateMethod <|-- ReparoComputador
+TemplateMethod <|-- ReparoOutros
+
+' Associações
+Cliente "1" o-- "0..*" Hardware : possui >
+OrdemServico "1" --> "1" Cliente : pertence a >
+OrdemServico "1" --> "1" Hardware : refere-se a >
+OrdemServico "0..*" --> "0..1" Tecnico : responsável >
+OrdemServico "0..*" o-- "0..*" Peca : utiliza >
+
+' Dependências e Composições
+OrdemServico *-- StateInterface : estado atual >
+OrdemServico --> EstadoOSEnum : status >
+Hardware --> TipoHardwareEnum
+Peca --> TipoPecaEnum
+
+' Dependência do Padrão Template Method
+Tecnico ..> TemplateMethod : usa (em executarOS)
+
+@enduml

@@ -1,0 +1,64 @@
+@startuml
+title Diagrama de Casos de Uso - Sistema de Assistência Técnica
+
+left to right direction
+
+' Atores (Baseados nas Entidades do pacote modelos.entidades)
+actor "Cliente" as Cliente
+actor "Atendente" as Atendente
+actor "Técnico" as Tecnico
+actor "Administrador" as Admin
+
+rectangle "Sistema de Gerenciamento de OS" {
+
+    ' Casos de Uso do Cliente
+    usecase "Consultar Meus Hardwares/OS" as UC_Ver_OS
+    usecase "Aprovar Orçamento" as UC_Aprovar
+    usecase "Cancelar OS" as UC_Cancelar
+
+    ' Casos de Uso do Atendente
+    usecase "Cadastrar Cliente" as UC_Cad_Cliente
+    usecase "Abrir Nova OS" as UC_Abrir
+    usecase "Atualizar Dados da OS" as UC_Atualizar_OS
+
+    ' Casos de Uso do Técnico
+    usecase "Assumir OS" as UC_Assumir
+    usecase "Realizar Orçamento" as UC_Orcar
+    usecase "Executar Reparo (Template Method)" as UC_Executar
+    usecase "Finalizar OS" as UC_Finalizar
+
+    ' Casos de Uso do Administrador
+    usecase "Excluir OS" as UC_Excluir
+    usecase "Visualizar Relatórios" as UC_Relatorios
+    
+    ' Relacionamentos entre Casos de Uso (Includes/Extends)
+    UC_Orcar .> UC_Assumir : <<include>>
+    
+}
+
+' Relacionamentos Cliente (Métodos em Cliente.java)
+Cliente --> UC_Ver_OS
+Cliente --> UC_Aprovar
+Cliente --> UC_Cancelar
+
+' Relacionamentos Atendente (Métodos em Atendente.java)
+Atendente --> UC_Cad_Cliente
+Atendente --> UC_Abrir
+Atendente --> UC_Atualizar_OS
+Atendente --> UC_Ver_OS
+
+' Relacionamentos Técnico (Métodos em Tecnico.java)
+Tecnico --> UC_Ver_OS
+Tecnico --> UC_Assumir
+Tecnico --> UC_Orcar
+Tecnico --> UC_Executar
+Tecnico --> UC_Finalizar
+
+' Relacionamentos Administrador (Métodos em Administrador.java e interface Relatorio)
+Admin --> UC_Abrir
+Admin --> UC_Atualizar_OS
+Admin --> UC_Excluir
+Admin --> UC_Relatorios
+Admin --> UC_Cad_Cliente
+
+@enduml
