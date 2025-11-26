@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Rodar Spring Boot",
+            "request": "launch",
+            "mainClass": "com.programacaoiii.assistencia_tecnica.AssistenciaTecnicaAplicacao",
+            "projectName": "assistencia_tecnica",
+            "env": {
+                "DB_USER": "postgres",
+                "DB_PASSWORD": "marcio3"
+            }
+        }
+    ]
+}
