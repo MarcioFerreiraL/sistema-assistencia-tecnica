@@ -60,16 +60,25 @@
               </div>
             </div>
 
-            <div v-if="os.estado === 'EM_REPARO'" class="workflow-container">
-              <h4>Etapas do Reparo</h4>
-              <div class="steps-track">
-                <div v-for="(step, idx) in passosReparo" :key="idx" 
-                     :class="['track-step', { 'completed': getStep(os.id) > idx, 'current': getStep(os.id) === idx }]"
-                     @click="avancarPasso(os.id, idx + 1)">
-                  <div class="circle">{{ idx + 1 }}</div>
-                  <span>{{ step }}</span>
-                </div>
+            <div v-if="os.estado === 'EM_REPARO'" class="notes-section">
+              <label>Registro do Serviço (Laudo Técnico)</label>
+              <textarea 
+                v-model="os.observacoesTecnicas" 
+                rows="5" 
+                placeholder="Descreva o que foi feito no equipamento (ex: Troca de tela, testes realizados...)"
+                class="text-area-full"
+              ></textarea>
+              
+              <div class="workflow-actions">
+                <button @click="salvarNotas(os)" class="btn-outline">
+                  💾 Salvar Notas
+                </button>
+                
+                <button @click="finalizarOS(os.id)" class="btn-dark">
+                  🏁 Finalizar Serviço
+                </button>
               </div>
+            </div>
               
               <div class="workflow-actions">
                 <button v-if="getStep(os.id) === 5" @click="executarReparoReal(os.id)" class="btn-success full-width">
@@ -84,7 +93,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script setup>
@@ -146,6 +155,19 @@ const finalizarOS = async (id) => {
 
 const logout = () => { localStorage.clear(); router.push('/'); };
 onMounted(carregarDados);
+
+const salvarNotas = async (os) => {
+  try {
+    // Envia apenas o texto para o backend
+    await api.patch(`/os/${os.id}/observacoes`, os.observacoesTecnicas, {
+      headers: { 'Content-Type': 'text/plain' } // Importante para enviar String pura
+    });
+    alert("Anotações salvas com sucesso!");
+  } catch (e) {
+    alert("Erro ao salvar anotações.");
+    console.error(e);
+  }
+};
 </script>
 
 <style scoped>
@@ -213,4 +235,24 @@ onMounted(carregarDados);
 .btn-dark { background: #1e293b; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 700; cursor: pointer; }
 .full-width { width: 100%; }
 .mt-2 { margin-top: 10px; }
+
+.notes-section {
+  margin-top: 15px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 15px;
+}
+.text-area-full {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-family: inherit;
+  resize: vertical;
+}
+.workflow-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
 </style>
