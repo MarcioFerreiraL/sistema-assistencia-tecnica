@@ -1,0 +1,167 @@
+@startuml
+title Diagrama de Sequência - Ciclo de Vida da Ordem de Serviço
+autonumber
+
+actor "Atendente" as Atendente
+actor "Técnico" as Tecnico
+actor "Cliente" as Cliente
+
+participant ":OrdemServicoControlador" as OSController
+participant ":OrdemServicoServico" as OSService
+participant ":OrdemServico" as OSModel
+participant ":EstadoOS" as State
+participant ":Tecnico (Model)" as TecnicoModel
+database ":OrdemServicoRepositorio" as OSRepo
+
+== 1. Abertura da OS (Estado: ABERTA) ==
+Atendente -> OSController: POST /api/os (DTO)
+activate OSController
+OSController -> OSService: salvarOS(dto)
+activate OSService
+OSService -> OSModel: new OrdemServico(...)
+activate OSModel
+OSModel --> OSService: os
+deactivate OSModel
+OSService -> OSRepo: save(os)
+activate OSRepo
+OSRepo --> OSService: osSalva
+deactivate OSRepo
+OSService --> OSController: osSalva
+deactivate OSService
+OSController --> Atendente: 201 Created (OS Aberta)
+deactivate OSController
+
+== 2. Técnico Assume e Orça (Estado: AGUARDANDO_APROVACAO) ==
+Tecnico -> OSController: PUT /api/os/{id} (atribuir técnico)
+activate OSController
+OSController -> OSService: atualizarOS(id, dto)
+activate OSService
+OSService -> OSRepo: findById(id)
+activate OSRepo
+OSRepo --> OSService: os
+deactivate OSRepo
+OSService -> OSModel: setTecnicoResponsavel(tecnico)
+activate OSModel
+deactivate OSModel
+OSService -> OSRepo: save(os)
+activate OSRepo
+OSRepo --> OSService: osAtualizada
+deactivate OSRepo
+OSService --> OSController: osAtualizada
+deactivate OSService
+OSController --> Tecnico: 200 OK
+deactivate OSController
+
+Tecnico -> OSController: POST /api/os/{id}/orcamentar
+activate OSController
+OSController -> OSService: orcamentarOS(id)
+activate OSService
+OSService -> OSRepo: findById(id)
+activate OSRepo
+OSRepo --> OSService: os
+deactivate OSRepo
+OSService -> OSModel: orcamentar()
+activate OSModel
+OSModel -> State: orcamentar(this)
+activate State
+State -> OSModel: setEstado(AGUARDANDO_APROVACAO)
+deactivate State
+deactivate OSModel
+OSService -> OSRepo: save(os)
+activate OSRepo
+OSRepo --> OSService: osOrcada
+deactivate OSRepo
+OSService --> OSController: osOrcada
+deactivate OSService
+OSController --> Tecnico: 200 OK
+deactivate OSController
+
+== 3. Aprovação do Cliente (Estado: EM_REPARO) ==
+Cliente -> OSController: POST /api/os/{id}/aprovar
+activate OSController
+OSController -> OSService: aprovarOrcamento(id)
+activate OSService
+OSService -> OSRepo: findById(id)
+activate OSRepo
+OSRepo --> OSService: os
+deactivate OSRepo
+OSService -> OSModel: aprovar()
+activate OSModel
+OSModel -> State: aprovar(this)
+activate State
+State -> OSModel: setEstado(EM_REPARO)
+deactivate State
+deactivate OSModel
+OSService -> OSRepo: save(os)
+activate OSRepo
+OSRepo --> OSService: osAprovada
+deactivate OSRepo
+OSService --> OSController: osAprovada
+deactivate OSService
+OSController --> Cliente: 200 OK
+deactivate OSController
+
+== 4. Execução do Reparo (Template Method) ==
+Tecnico -> OSController: POST /api/os/{id}/executar
+activate OSController
+OSController -> OSService: executarOS(id)
+activate OSService
+OSService -> OSRepo: findById(id)
+activate OSRepo
+OSRepo --> OSService: os
+deactivate OSRepo
+OSService -> OSModel: executar()
+activate OSModel
+OSModel -> State: executar(this)
+activate State
+State -> TecnicoModel: executarOS(os)
+activate TecnicoModel
+note right of TecnicoModel
+  Aqui é instanciado o Template Method
+  específico (ex: ReparoNotebook)
+end note
+TecnicoModel -> TecnicoModel: diagnosticarProblema()
+TecnicoModel -> TecnicoModel: separarMateriais()
+TecnicoModel -> TecnicoModel: realizarReparo()
+TecnicoModel -> TecnicoModel: realizarTestes()
+TecnicoModel -> TecnicoModel: limpezaFinal()
+TecnicoModel --> State: void
+deactivate TecnicoModel
+State --> OSModel: void
+deactivate State
+deactivate OSModel
+OSService -> OSRepo: save(os)
+activate OSRepo
+OSRepo --> OSService: os
+deactivate OSRepo
+OSService --> OSController: os
+deactivate OSService
+OSController --> Tecnico: 200 OK
+deactivate OSController
+
+== 5. Finalização (Estado: FINALIZADA) ==
+Tecnico -> OSController: POST /api/os/{id}/finalizar
+activate OSController
+OSController -> OSService: finalizarOS(id)
+activate OSService
+OSService -> OSRepo: findById(id)
+activate OSRepo
+OSRepo --> OSService: os
+deactivate OSRepo
+OSService -> OSModel: finalizar()
+activate OSModel
+OSModel -> State: finalizar(this)
+activate State
+State -> OSModel: setEstado(FINALIZADA)
+deactivate State
+deactivate OSModel
+OSService -> OSRepo: save(os)
+activate OSRepo
+OSRepo --> OSService: osFinalizada
+deactivate OSRepo
+OSService --> OSController: osFinalizada
+deactivate OSService
+OSController --> Tecnico: 200 OK
+deactivate OSController
+
+@enduml
