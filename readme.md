@@ -97,11 +97,12 @@ Utilizado na classe `DatabaseConnector` para garantir uma instância única de c
     ```bash
     npm install
     ```
-3.  Rode o servidor de desenvolvimento:
+3.  Gere o build de produção e inicie em modo de visualização (Preview):
     ```bash
-    npm run dev
+    npm run build
+    npm run preview
     ```
-    *O front-end estará disponível (geralmente) em `http://localhost:5173`.*
+    *O front-end estará disponível em `http://localhost:4173` (porta padrão do preview).*
 
 ## 📚 Documentação da API
 

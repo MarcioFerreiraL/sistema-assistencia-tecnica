@@ -18,7 +18,7 @@ public class Hardware extends ProdutoAbstrato{
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
-	private Long cliente_id;
+	private Cliente cliente;
 	
 	public Hardware() {
     	super();
@@ -27,7 +27,7 @@ public class Hardware extends ProdutoAbstrato{
 	public Hardware(TipoHardwareEnum tipoHardware, Cliente cliente) {
 		super();
 		this.tipoHardware = tipoHardware;
-		this.cliente_id = cliente.getId();
+		this.cliente = cliente;
 	}
 
 	public TipoHardwareEnum getTipoHardware() {
@@ -38,12 +38,12 @@ public class Hardware extends ProdutoAbstrato{
 		this.tipoHardware = tipoHardware;
 	}
 
-	public Long getClienteId() {
-		return cliente_id;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
-		this.cliente_id = cliente.getId();
+		this.cliente = cliente;
 	}
 	
 	

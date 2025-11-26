@@ -47,8 +47,7 @@ public class HardwareServico {
     public Hardware atualizarHardware(Long id, HardwareDto dto) {
         Hardware hardwareExistente = buscarHardwarePorId(id);
         
-        // Se o cliente mudou, busca o novo cliente
-        if (!hardwareExistente.getClienteId().equals(dto.clienteId())) {
+        if (!hardwareExistente.getCliente().getId().equals(dto.clienteId())) {
              Cliente novoCliente = clienteRepositorio.findById(dto.clienteId())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado com ID: " + dto.clienteId()));
             hardwareExistente.setCliente(novoCliente);
