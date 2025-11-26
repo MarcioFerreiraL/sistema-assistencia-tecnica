@@ -12,5 +12,4 @@ public class AssistenciaTecnicaAplicacao {
 
 }
 
-// fazer os testes
-// fazer sistema de login
+
