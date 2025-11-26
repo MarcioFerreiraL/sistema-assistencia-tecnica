@@ -13,12 +13,12 @@ const route = useRoute();
 // Títulos Dinâmicos (Melhoria #5)
 watch(route, (to) => {
   const titles = {
-    'login': 'Login - TechRepair',
-    'cliente': 'Área do Cliente - TechRepair',
-    'tecnico': 'Área Técnica - TechRepair',
-    'atendente': 'Atendimento - TechRepair',
-    'admin': 'Administração - TechRepair'
+    'login': 'Login - MarcioTec',
+    'cliente': 'Área do Cliente - MarcioTec',
+    'tecnico': 'Área Técnica - MarcioTec',
+    'atendente': 'Atendimento - MarcioTec',
+    'admin': 'Administração - MarcioTec'
   };
-  document.title = titles[to.name] || 'TechRepair Sistema';
+  document.title = titles[to.name] || 'MarcioTec Sistema';
 }, { immediate: true });
 </script>

@@ -3,10 +3,10 @@
     <div class="login-card">
       <div class="logo-area">
         <div class="icon-circle">
-          <svg xmlns="frontend-assistencia\public\logo.svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <img src="/logo.svg" alt="Logo MarcioTec" width="150" height="150" />
         </div>
         <h1>MarcioTec</h1>
-        <p>Sistema de Gestão de Assistência</p>
+        <p>Sistema de Gestão de Assistência Técnica</p>
       </div>
 
       <form @submit.prevent="fazerLogin">
@@ -124,15 +124,15 @@ const fazerLogin = async () => {
 
 .logo-area {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .icon-circle {
-  width: 56px;
-  height: 56px;
-  background: #eff6ff;
+  width: 90px;
+  height: 90px;
+  background: #eff6ff00;
   color: var(--color-primary);
-  border-radius: 50%;
+  border-radius: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
