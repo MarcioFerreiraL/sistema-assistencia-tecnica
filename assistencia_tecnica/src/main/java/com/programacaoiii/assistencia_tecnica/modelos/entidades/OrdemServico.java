@@ -37,8 +37,12 @@ public class OrdemServico implements Serializable{
 	private UUID id;
 	
 	private double valorOrcamento;
+	
+	@Column(columnDefinition = "TEXT")
 	private String descricao;
 	
+	@Column(columnDefinition = "TEXT")
+    private String observacoesTecnicas;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -48,7 +52,6 @@ public class OrdemServico implements Serializable{
     @Column(nullable = false)
     private Instant dataAtualizacao;
 
-	
 	@Transient
     private StateInterface comportamentoEstado;
 	
@@ -150,8 +153,18 @@ public class OrdemServico implements Serializable{
         return dataAtualizacao;
     }
     
+	public String getObservacoesTecnicas() {
+		return observacoesTecnicas;
+	}
+
+	public void setObservacoesTecnicas(String observacoesTecnicas) {
+		this.observacoesTecnicas = observacoesTecnicas;
+	}
+    
     // padrao state
     
+
+
 	public void aprovar() {
         this.comportamentoEstado.aprovar(this);
     }

@@ -6,7 +6,7 @@ import com.programacaoiii.assistencia_tecnica.modelos.enums.EstadoOSEnum;
 public class EstadoAguardandoOrcamento extends EstadoOSAbstrato{
     @Override
     public void orcamentar(OrdemServico os) {
-        os.setEstado(EstadoOSEnum.EM_REPARO);
+        os.setEstado(EstadoOSEnum.AGUARDANDO_APROVACAO);
     }
     
     @Override

@@ -8,7 +8,7 @@ public class DatabaseConnector {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/assistencia_tecnica";
     private static final String USER = "postgres";
-    private static final String PASS = "5002";
+    private static final String PASS = "";
 
     private static volatile DatabaseConnector instance;
 

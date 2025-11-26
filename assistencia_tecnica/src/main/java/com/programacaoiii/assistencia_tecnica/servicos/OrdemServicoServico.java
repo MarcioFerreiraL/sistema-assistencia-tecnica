@@ -151,5 +151,12 @@ public class OrdemServicoServico {
     public List<OrdemServico> buscarPorEstadoETecnicoId(EstadoOSEnum estado, Long tecnicoId) {
         return osRepositorio.findByEstadoAndTecnicoId(estado, tecnicoId);
     }
+    
+    @Transactional
+    public OrdemServico atualizarObservacoes(UUID id, String texto) {
+        OrdemServico os = buscarOSPorId(id);
+        os.setObservacoesTecnicas(texto);
+        return osRepositorio.save(os);
+    }
 
 }

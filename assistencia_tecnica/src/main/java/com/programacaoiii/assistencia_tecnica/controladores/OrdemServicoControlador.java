@@ -96,4 +96,9 @@ public class OrdemServicoControlador {
             @PathVariable EstadoOSEnum estado, @PathVariable Long id) {
         return ResponseEntity.ok(osServico.buscarPorEstadoETecnicoId(estado, id));
     }
+    
+    @PatchMapping("/{id}/observacoes")
+    public ResponseEntity<OrdemServico> salvarObservacoes(@PathVariable UUID id, @RequestBody String texto) {
+        return ResponseEntity.ok(osServico.atualizarObservacoes(id, texto));
+    }
 }
