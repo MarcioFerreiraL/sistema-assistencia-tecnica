@@ -26,6 +26,16 @@ O sistema atende a quatro perfis de usuários, conforme mapeado nos Casos de Uso
     * Gestão de relatórios (Financeiro, Estoque, OS).
     * Exclusão de registros (permissão elevada).
 
+## 🖼️ Telas
+
+| Área técnica | Painel de atendimento |
+| :---: | :---: |
+| <img src="documents/telas/tecnico.webp" width="420" alt="Área técnica: fila de ordens de serviço e reparos em andamento com laudo" /> | <img src="documents/telas/atendente.webp" width="420" alt="Painel de atendimento com cadastro de clientes e últimas solicitações" /> |
+| **Área do cliente** | **Acesso** |
+| <img src="documents/telas/cliente.webp" width="420" alt="Área do cliente com a solicitação aberta" /> | <img src="documents/telas/login.webp" width="420" alt="Tela de acesso por tipo de usuário e CPF" /> |
+
+Estudo de caso completo em [marciodev.com/projetos/assistencia-tecnica](https://marciodev.com/projetos/assistencia-tecnica).
+
 ## 🏛️ Arquitetura e Padrões de Projeto
 
 O back-end foi construído com foco em código limpo e extensível, utilizando padrões de projeto clássicos (GoF):

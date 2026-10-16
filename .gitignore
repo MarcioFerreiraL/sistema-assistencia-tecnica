@@ -1,0 +1,7 @@
+# Saídas de build (Maven, Eclipse/VS Code, Vite)
+bin/
+target/
+*.class
+node_modules/
+dist/
+.env
