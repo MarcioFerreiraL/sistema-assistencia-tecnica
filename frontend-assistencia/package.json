@@ -9,16 +9,24 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:demo": "VITE_DEMO=1 vite build",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.3.0",
     "axios": "^1.13.2",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "@vitejs/plugin-vue": "^6.0.1",
+    "serve": "^14.2.6",
     "vite": "^7.1.11",
-    "vite-plugin-vue-devtools": "^8.0.3"
+    "vite-plugin-vue-devtools": "^8.0.3",
+    "vitest": "^5.0.5"
   }
 }
