@@ -1,6 +1,8 @@
-# Sistema de Assistência Técnica
+# Ponto de Solda: sistema de ordens de serviço para assistência técnica
 
-Este é um sistema completo para gerenciamento de uma assistência técnica de equipamentos eletrônicos. O projeto opera com uma arquitetura **Full Stack**, utilizando uma API REST em **Java (Spring Boot)** no back-end e uma interface moderna em **Vue.js** no front-end.
+Sistema para gerenciar uma assistência técnica de equipamentos eletrônicos, com uma API REST em **Java (Spring Boot)** no back-end e uma interface em **Vue.js** no front-end.
+
+**Demo:** [assistencia.marciodev.com](https://assistencia.marciodev.com). A demo é só o front-end, publicado como site estático na Cloudflare, com a loja fictícia **Ponto de Solda**. Um back-end simulado roda no navegador e segue as mesmas regras da API: a máquina de estados da OS, o roteiro de reparo de cada tipo de aparelho e as validações de cadastro. Dá para entrar com um clique como cliente, atendente, técnico ou dono da loja; o que você muda fica só no seu navegador, e o botão "Restaurar dados de exemplo" volta tudo ao início.
 
 O sistema gerencia todo o ciclo de vida de uma Ordem de Serviço (OS), desde o cadastro do cliente e abertura do chamado até o diagnóstico técnico, orçamento, reparo e entrega.
 
@@ -28,11 +30,11 @@ O sistema atende a quatro perfis de usuários, conforme mapeado nos Casos de Uso
 
 ## 🖼️ Telas
 
-| Área técnica | Painel de atendimento |
+| Bancada do técnico | Balcão de atendimento |
 | :---: | :---: |
-| <img src="documents/telas/tecnico.webp" width="420" alt="Área técnica: fila de ordens de serviço e reparos em andamento com laudo" /> | <img src="documents/telas/atendente.webp" width="420" alt="Painel de atendimento com cadastro de clientes e últimas solicitações" /> |
-| **Área do cliente** | **Acesso** |
-| <img src="documents/telas/cliente.webp" width="420" alt="Área do cliente com a solicitação aberta" /> | <img src="documents/telas/login.webp" width="420" alt="Tela de acesso por tipo de usuário e CPF" /> |
+| <img src="documents/telas/tecnico.webp" width="420" alt="Bancada do técnico: fila do balcão e OS para orçar, com o andamento em furos na etiqueta" /> | <img src="documents/telas/atendente.webp" width="420" alt="Balcão: receber aparelho pelo CPF do cliente e lista de ordens filtrada por estado" /> |
+| **Área do cliente** | **Entrada** |
+| <img src="documents/telas/cliente.webp" width="420" alt="Área do cliente com um orçamento esperando aprovação" /> | <img src="documents/telas/login.webp" width="420" alt="Entrada com um clique por perfil na demo, ou por perfil e CPF" /> |
 
 Estudo de caso completo em [marciodev.com/projetos/assistencia-tecnica](https://marciodev.com/projetos/assistencia-tecnica).
 
@@ -77,7 +79,8 @@ Utilizado na classe `DatabaseConnector` para garantir uma instância única de c
 * **Vite** (Build Tool rápida)
 * **Vue Router** (Navegação SPA)
 * **Axios** (Comunicação HTTP)
-* **CSS Puro** (Estilização customizada com variáveis CSS)
+* **CSS próprio** com variáveis (identidade Ponto de Solda, fonte Archivo)
+* **Vitest** (regras do back-end de demonstração) e **Playwright** com **axe** (fluxos no celular e no computador, acessibilidade)
 
 ## 🚀 Como Executar
 
@@ -113,6 +116,22 @@ Utilizado na classe `DatabaseConnector` para garantir uma instância única de c
     npm run preview
     ```
     *O front-end estará disponível em `http://localhost:4173` (porta padrão do preview).*
+
+### Demo sem back-end
+
+```bash
+cd frontend-assistencia
+npm install
+VITE_DEMO=1 npm run dev     # demo com dados de exemplo no navegador
+npm run build:demo          # build estático publicado na Cloudflare (wrangler.jsonc)
+```
+
+### Testes do front-end
+
+```bash
+npm test                    # regras do back-end de demonstração (Vitest)
+npm run build:demo && npm run test:e2e   # fluxos no celular e no computador (Playwright + axe)
+```
 
 ## 📚 Documentação da API
 
