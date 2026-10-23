@@ -1,24 +1,24 @@
+<script setup>
+import Avisos from "./components/Avisos.vue";
+import FaixaDemo from "./components/FaixaDemo.vue";
+import Rodape from "./components/Rodape.vue";
+import Topo from "./components/Topo.vue";
+import { DEMO } from "./services/api.js";
+</script>
+
 <template>
-  <ToastContainer />
-  <router-view />
+  <a href="#conteudo" class="pular">Pular para o conteúdo</a>
+  <FaixaDemo v-if="DEMO" />
+  <Topo />
+  <main id="conteudo" tabindex="-1">
+    <RouterView />
+  </main>
+  <Rodape />
+  <Avisos />
 </template>
 
-<script setup>
-import ToastContainer from './components/ToastContainer.vue';
-import { watch } from 'vue';
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
-
-// Títulos Dinâmicos (Melhoria #5)
-watch(route, (to) => {
-  const titles = {
-    'login': 'Login - MarcioTec',
-    'cliente': 'Área do Cliente - MarcioTec',
-    'tecnico': 'Área Técnica - MarcioTec',
-    'atendente': 'Atendimento - MarcioTec',
-    'admin': 'Administração - MarcioTec'
-  };
-  document.title = titles[to.name] || 'MarcioTec Sistema';
-}, { immediate: true });
-</script>
+<style>
+#conteudo:focus {
+  outline: none;
+}
+</style>

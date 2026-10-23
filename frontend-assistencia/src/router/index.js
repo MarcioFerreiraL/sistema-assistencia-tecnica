@@ -1,22 +1,35 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import { PERFIS, useSessao } from "../composables/sessao.js";
+import Inicio from "../views/Inicio.vue";
+
+const rotas = [
+  { path: "/", name: "inicio", component: Inicio, meta: { titulo: "Ponto de Solda, assistência técnica em Surubim" } },
+  { path: "/entrar", name: "entrar", component: () => import("../views/Entrar.vue"), meta: { titulo: "Entrar" } },
+  { path: "/cliente", name: "cliente", component: () => import("../views/Cliente.vue"), meta: { perfil: "cliente", titulo: "Meus aparelhos" } },
+  { path: "/balcao", name: "balcao", component: () => import("../views/Balcao.vue"), meta: { perfil: "atendente", titulo: "Balcão" } },
+  { path: "/bancada", name: "bancada", component: () => import("../views/Bancada.vue"), meta: { perfil: "tecnico", titulo: "Bancada" } },
+  { path: "/gerencia", name: "gerencia", component: () => import("../views/Gerencia.vue"), meta: { perfil: "admin", titulo: "Gerência" } },
+  { path: "/:caminho(.*)*", name: "nao-encontrada", component: () => import("../views/NaoEncontrada.vue"), meta: { titulo: "Página não encontrada" } },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    { path: '/', name: 'login', component: LoginView },
-    { path: '/cliente', name: 'cliente', component: () => import('../views/ClienteDashboard.vue') },
-    { path: '/tecnico', name: 'tecnico', component: () => import('../views/TecnicoDashboard.vue') },
-    { path: '/atendente', name: 'atendente', component: () => import('../views/AtendenteDashboard.vue') },
-    { path: '/admin', name: 'admin', component: () => import('../views/AdminDashboard.vue') }
-  ]
-})
+  routes: rotas,
+  scrollBehavior: (to) => (to.hash ? { el: to.hash } : { top: 0 }),
+});
 
-// Guarda de rota simples
-router.beforeEach((to, from, next) => {
-  const usuario = localStorage.getItem('usuario');
-  if (to.name !== 'login' && !usuario) next({ name: 'login' });
-  else next();
-})
+router.beforeEach((to) => {
+  const exige = to.meta.perfil;
+  if (!exige) return true;
+  const { sessao } = useSessao();
+  if (!sessao.value) return { name: "entrar", query: { volta: to.fullPath } };
+  if (sessao.value.perfil !== exige) return PERFIS[sessao.value.perfil].inicio;
+  return true;
+});
 
-export default router
+router.afterEach((to) => {
+  const t = to.meta.titulo;
+  document.title = to.name === "inicio" ? t : `${t} · Ponto de Solda`;
+});
+
+export default router;

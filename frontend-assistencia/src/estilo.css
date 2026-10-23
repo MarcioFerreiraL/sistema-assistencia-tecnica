@@ -1,0 +1,274 @@
+@import "@fontsource-variable/archivo/wdth.css";
+
+/*
+ * Ponto de Solda: a etiqueta de papel manila amarrada no aparelho, o número da OS em fita de
+ * rotuladora e a tinta azul do papel carbono. Amarelo de multímetro só sobre o grafite.
+ */
+:root {
+  --papel: #f3ecdc;
+  --papel-claro: #faf6ec;
+  --grafite: #1d2026;
+  --amarelo: #f5c518;
+  --carbono: #34379c;
+  --carbono-escuro: #262879;
+  --linha: #d8ccb0;
+  --apagado: #5e5a50;
+  --branco: #ffffff;
+
+  --raio: 6px;
+  --sombra-etiqueta: 0 1px 0 rgb(29 32 38 / 0.08), 0 6px 16px -10px rgb(29 32 38 / 0.35);
+
+  --fonte: "Archivo Variable", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--grafite);
+  font-family: var(--fonte);
+  font-size: 1rem;
+  line-height: 1.55;
+  font-stretch: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.1;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--carbono);
+  text-underline-offset: 3px;
+}
+
+fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--carbono);
+  outline-offset: 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.pular {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 50;
+  background: var(--grafite);
+  color: var(--amarelo);
+  padding: 0.6rem 1rem;
+  border-radius: var(--raio);
+}
+.pular:focus {
+  top: 1rem;
+}
+
+.conteudo {
+  width: min(72rem, 100% - 2rem);
+  margin-inline: auto;
+}
+
+/* Títulos: Archivo expandida e pesada. */
+.titulo {
+  font-stretch: 125%;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+.titulo-1 {
+  font-size: clamp(2rem, 6vw, 3.6rem);
+}
+.titulo-2 {
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+}
+.titulo-3 {
+  font-size: 1.15rem;
+}
+
+.fino {
+  color: var(--apagado);
+}
+
+/* Fita de rotuladora: grafite, letra branca em relevo. */
+.fita {
+  display: inline-block;
+  background: var(--grafite);
+  color: var(--branco);
+  font-stretch: 112%;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 0.2em 0.6em 0.15em;
+  border-radius: 2px;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.25), 0 -1px 0 rgb(0 0 0 / 0.6);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Botões */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--raio);
+  border: 2px solid transparent;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn:disabled {
+  cursor: not-allowed;
+}
+.btn-primario {
+  background: var(--carbono);
+  color: var(--branco);
+}
+.btn-primario:hover:not(:disabled) {
+  background: var(--carbono-escuro);
+}
+.btn-primario:disabled {
+  background: var(--linha);
+  color: var(--apagado);
+}
+.btn-grafite {
+  background: var(--grafite);
+  color: var(--amarelo);
+}
+.btn-grafite:hover:not(:disabled) {
+  background: #000;
+}
+.btn-contorno {
+  background: transparent;
+  border-color: var(--grafite);
+  color: var(--grafite);
+}
+.btn-contorno:hover:not(:disabled) {
+  background: var(--papel-claro);
+}
+.btn-link {
+  background: none;
+  border: 0;
+  padding: 0.25rem 0;
+  min-height: 2.75rem;
+  color: var(--carbono);
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Campos */
+.campo {
+  display: grid;
+  gap: 0.35rem;
+}
+.rotulo {
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+.entrada {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--branco);
+  border: 2px solid var(--linha);
+  border-radius: var(--raio);
+}
+.entrada:focus-visible {
+  border-color: var(--carbono);
+  outline-offset: 0;
+}
+textarea.entrada {
+  min-height: 6rem;
+  resize: vertical;
+}
+.ajuda {
+  font-size: 0.875rem;
+  color: var(--apagado);
+}
+
+/* Folha: superfície branca para formulários e listas. */
+.folha {
+  background: var(--papel-claro);
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.pilha {
+  display: grid;
+  gap: 1rem;
+}
+/* Itens de grid não crescem além do contêiner: tabelas e abas rolam por dentro. */
+.pilha > *,
+.pagina > * {
+  min-width: 0;
+}
+
+.entra {
+  animation: entra 0.35s ease-out both;
+}
+@keyframes entra {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

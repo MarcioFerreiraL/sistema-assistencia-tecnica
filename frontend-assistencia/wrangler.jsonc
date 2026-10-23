@@ -1,0 +1,12 @@
+// Demo pública: Worker só com arquivos estáticos (Cloudflare Workers Static Assets).
+// O build roda `npm run build:demo` (Vite com VITE_DEMO=1) antes do deploy.
+{
+  "name": "assistencia-demo",
+  "compatibility_date": "2026-10-23",
+  "assets": {
+    "directory": "./dist",
+    // SPA: qualquer rota sem arquivo recebe index.html e o Vue Router decide (inclusive a 404).
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [{ "pattern": "assistencia.marciodev.com", "custom_domain": true }]
+}
