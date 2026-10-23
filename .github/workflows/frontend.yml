@@ -1,0 +1,32 @@
+name: Frontend
+
+on:
+  push:
+    branches: [master]
+    paths: ["frontend-assistencia/**", ".github/workflows/frontend.yml"]
+  pull_request:
+    paths: ["frontend-assistencia/**", ".github/workflows/frontend.yml"]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-assistencia
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend-assistencia/package-lock.json
+      - run: npm ci
+      - name: Testes de unidade (regras do backend da demo)
+        run: npm test
+      - name: Build com a API real
+        run: npm run build
+      - name: Build estático da demo
+        run: npm run build:demo
+      - run: npx playwright install --with-deps chromium
+      - name: Testes de ponta a ponta (celular e computador, com axe)
+        run: npm run test:e2e
